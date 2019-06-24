@@ -45,7 +45,6 @@ public class ProductList extends AppCompatActivity {
         rootGrid=findViewById(R.id.gridView);
 
 
-
         product=new ArrayList<Products>();
 
         product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2134"));
@@ -73,6 +72,8 @@ public class ProductList extends AppCompatActivity {
 
         SharedPreferences sharedPreferences=getSharedPreferences("ViewMode",MODE_PRIVATE);
         currentViewMode=sharedPreferences.getInt("currentViewMode",VIEW_MODE_LISTVIEW);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         rootList.setOnItemClickListener(onItemClickListener);
         rootGrid.setOnItemClickListener(onItemClickListener);
@@ -140,7 +141,14 @@ public class ProductList extends AppCompatActivity {
                 editor.putInt("currentViewMode",currentViewMode);
                 editor.commit();
                 break;
+
+                //used to close the activity
             case R.id.search:
+                finish();
+                break;
+
+                //back button used to close the activity
+            case android.R.id.home:
                 finish();
                 break;
         }
