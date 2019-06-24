@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:layout_width="match_parent"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_height="54dp"
-        android:id="@+id/product_name"
-        android:layout_above="@+id/search"
-        />
+<EditText
+    android:layout_width="match_parent"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_height="54dp"
+    android:id="@+id/product_name"
+    android:layout_above="@+id/search"
+    android:inputType="text"
+    android:imeOptions="actionSearch" />
 
 <Button
 
