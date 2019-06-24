@@ -1,6 +1,7 @@
 package com.example.pricecompare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ public class ProductList extends AppCompatActivity {
         setContentView(R.layout.activity_product_list);
         list_stub=findViewById(R.id.stub_list);
         grid_stub=findViewById(R.id.stub_grid);
+
+
 
         list_stub.inflate();
         grid_stub.inflate();
@@ -136,6 +139,9 @@ public class ProductList extends AppCompatActivity {
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putInt("currentViewMode",currentViewMode);
                 editor.commit();
+                break;
+            case R.id.search:
+                finish();
                 break;
         }
 
