@@ -1,21 +1,14 @@
 package com.example.pricecompare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewStub;
-import android.widget.AdapterView;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EditText editSearch=  findViewById(R.id.product_name);
+        editSearch.setOnEditorActionListener(onEditorActionListener);
 
         Button button=findViewById(R.id.search);
         button.setOnClickListener(new View.OnClickListener() {
@@ -36,5 +32,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //method used to handle enter key event for search
+    private TextView.OnEditorActionListener onEditorActionListener=new TextView.OnEditorActionListener() {
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+            switch(actionId){
+                case EditorInfo.IME_ACTION_SEARCH:
+                    Intent i =new Intent(MainActivity.this,ProductList.class);
+                    startActivity(i);
+                    break;
+            }
+            return false;
+        }
+    };
 
 }
