@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,9 @@ public class GridProductAdapter extends ArrayAdapter<Products> {
 
         TextView price=listview.findViewById(R.id.product_price);
         price.setText(currentProduct.getPrice());
+
+        ImageView img=listview.findViewById(R.id.product_image);
+        Picasso.get().load(currentProduct.getImageProduct()).into(img);
 
 
         return listview;

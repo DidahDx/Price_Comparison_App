@@ -48,4 +48,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //used to build the jumia url link
+    public void buildJumiaUrl(){
+
+    }
+
+    //used to build the Kilimal url link
+    public void buildKilimallUrl(){
+
+    }
+
+    //used to build the masoko url link
+    public void buildMasokoUrl(){
+
+    }
+
 }

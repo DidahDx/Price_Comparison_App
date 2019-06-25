@@ -1,9 +1,16 @@
 package com.example.pricecompare;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +19,15 @@ import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.pricecompare.jumia.jumiaScrape;
 
 import java.util.ArrayList;
 
-public class ProductList extends AppCompatActivity {
+public class ProductList extends AppCompatActivity  implements  LoaderManager.LoaderCallbacks<ArrayList<Products>> {
     private ViewStub list_stub;
     private ViewStub grid_stub;
     GridView rootGrid;
@@ -25,9 +36,14 @@ public class ProductList extends AppCompatActivity {
     ListProductAdapter listAdapter;
     private int currentViewMode=0;
 
+    TextView emptyState;
     static final int VIEW_MODE_LISTVIEW=0;
     static final int VIEW_MODE_GRIDVIEW=1;
     ArrayList<Products> product;
+
+    ProgressBar progressBar;
+
+    static String url="https://www.jumia.co.ke/oppo/?q=a7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,39 +61,23 @@ public class ProductList extends AppCompatActivity {
         rootGrid=findViewById(R.id.gridView);
 
 
-        product=new ArrayList<Products>();
-
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2134"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2135"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2145"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","1345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2135"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2145"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2135"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2134"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2135"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","21345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2145"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","2345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","1345"));
-        product.add(new Products("Long placeholder for the  descrption of the product should not be too long","213f5"));
-
+        progressBar=findViewById(R.id.progress_circular);
 
         SharedPreferences sharedPreferences=getSharedPreferences("ViewMode",MODE_PRIVATE);
         currentViewMode=sharedPreferences.getInt("currentViewMode",VIEW_MODE_LISTVIEW);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        rootList.setOnItemClickListener(onItemClickListener);
-        rootGrid.setOnItemClickListener(onItemClickListener);
-        switchView();
+        ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
+        if (networkInfo !=null && networkInfo.isConnected()){
+
+            getSupportLoaderManager().initLoader(100,null ,this).forceLoad();
+        }else{
+            progressBar.setVisibility(View.GONE);
+//            emptyState.setText("No network Connection");
+        }
+
     }
 
 
@@ -155,4 +155,54 @@ public class ProductList extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @NonNull
+    @Override
+    public Loader<ArrayList<Products>> onCreateLoader(int id, @Nullable Bundle args) {
+        return new ProductAsyncLoader(ProductList.this);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<ArrayList<Products>> loader, ArrayList<Products> data) {
+        progressBar.setVisibility(View.GONE);
+        if (data!=null){
+//            emptyState.setText("No  Data Found");
+            UpdateUi(data);
+        }
+    }
+
+
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<ArrayList<Products>> loader) {
+
+    }
+
+    private static class ProductAsyncLoader extends AsyncTaskLoader<ArrayList<Products>> {
+
+        ProductAsyncLoader(@NonNull Context context) {
+            super(context);
+        }
+
+
+        @Nullable
+        @Override
+        public ArrayList<Products> loadInBackground() {
+//            ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(url);
+            ArrayList<Products>  prod= (ArrayList<Products>) jumiaScrape.getData();
+
+            return prod;
+        }
+    }
+
+    private void UpdateUi(ArrayList<Products> data) {
+
+        product=data;
+        switchView();
+
+        rootList.setOnItemClickListener(onItemClickListener);
+        rootGrid.setOnItemClickListener(onItemClickListener);
+
+    }
+
 }

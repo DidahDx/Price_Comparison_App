@@ -2,22 +2,27 @@ package com.example.pricecompare;
 
 public class Products {
 
-    int imageLogo;
-    int imageProduct;
+    String imageLogo;
+    String imageProduct;
     String ProductDescription;
     String Price;
-
 
     public Products(String ProductDes,String price){
         ProductDescription=ProductDes;
         Price=price;
     }
 
-    public int getImageLogo() {
+    public Products(String ProductDes,String price,String imageP){
+        ProductDescription=ProductDes;
+        Price=price;
+        imageProduct=imageP;
+    }
+
+    public String getImageLogo() {
         return imageLogo;
     }
 
-    public int getImageProduct() {
+    public String getImageProduct() {
         return imageProduct;
     }
 
