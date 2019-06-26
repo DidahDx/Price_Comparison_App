@@ -151,8 +151,9 @@ public class QueryUtil {
 
                     String productdecrption=row.select("span.name").text();
                     String productPrice=row.select("span.price").text();
+                    String imglogo="https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png";
 
-                    pro = new Products(productdecrption,productPrice,imageurl,productLink);
+                    pro = new Products(productdecrption,productPrice,imageurl,productLink,imglogo);
                 }
 
                 products.add(pro);

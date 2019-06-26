@@ -45,6 +45,10 @@ public class GridProductAdapter extends ArrayAdapter<Products> {
         String url =currentProduct.getImageProduct();
         Picasso.get().load(url).into(img);
 
+        ImageView imgLogo=listview.findViewById(R.id.website_logo);
+        String urlLogo=currentProduct.getImageLogo();
+        Picasso.get().load(urlLogo).into(imgLogo);
+
         return listview;
     }
 
