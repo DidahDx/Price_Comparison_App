@@ -12,15 +12,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListProductAdapter extends ArrayAdapter<Products> {
+    Activity context;
 
     public ListProductAdapter(@NonNull Activity context, @NonNull ArrayList<Products> objects) {
         super(context, 0, objects);
+        this.context=context;
     }
 
     @NonNull
@@ -39,8 +42,11 @@ public class ListProductAdapter extends ArrayAdapter<Products> {
         TextView price=listview.findViewById(R.id.product_price);
         price.setText(currentProduct.getPrice());
 
-        ImageView img=listview.findViewById(R.id.product_image);
-        Picasso.get().load(currentProduct.getImageProduct()).into(img);
+        ImageView img=(ImageView) listview.findViewById(R.id.product_image);
+
+        String url =currentProduct.getImageProduct();
+        Picasso.get().load(url).into(img);
+
 
 
         return listview;
