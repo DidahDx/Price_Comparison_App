@@ -8,6 +8,7 @@ import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -105,14 +106,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         }
     }
 
-    //used to set item listener
-    AdapterView.OnItemClickListener onItemClickListener=new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getApplicationContext(),product.get(position).getPrice(),Toast.LENGTH_SHORT).show();
 
-        }
-    };
 
     //setting the menu with the switch mode option
     @Override
@@ -188,8 +182,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         @Nullable
         @Override
         public ArrayList<Products> loadInBackground() {
-//            ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(url);
-            ArrayList<Products>  prod= (ArrayList<Products>) jumiaScrape.getData();
+            ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(url);
+//            ArrayList<Products>  prod= (ArrayList<Products>) jumiaScrape.getData();
 
             return prod;
         }
@@ -203,6 +197,24 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         rootList.setOnItemClickListener(onItemClickListener);
         rootGrid.setOnItemClickListener(onItemClickListener);
 
+
+
     }
+
+
+    //used to set item listener
+    AdapterView.OnItemClickListener onItemClickListener=new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Products pro=product.get(position);
+            String url=pro.getUrlLink();
+
+            Intent i=new Intent(ProductList.this,webView.class);
+            i.putExtra("url",url);
+            startActivity(i);
+
+        }
+    };
 
 }

@@ -17,28 +17,29 @@ public class jumiaScrape {
     public static ArrayList<Products> getData(){
 
         ArrayList<Products> Jumiaproduct = null;
-        StringBuilder builder=new StringBuilder();
 
         try {
             Document doc= Jsoup.connect(buildUrl()).get();
 
-            for (Element row:doc.select("section.products.-mabaya div")){
+//            for (Element row:doc.select("section.products.-mabaya div.sku.-gallery")){
+//
+//                String imageurl=row.select("img.lazy.image.-loaded").attr("src");
+//                String productLink=row.select("a.link").attr("href");
+//                String productdecrption=row.select("span.name").text();
+//                String productPrice=row.select("span.price").text();
+//                    if (doc.select("section.products.-mabaya div").equals("")){
+//
+//                    }else{
+//                        Jumiaproduct.add(new Products(productdecrption,productPrice));
+//                        Log.i("Error Add", "Error Adding products from web");
+//
+//                    }
 
-                String imageurl=row.select("img.lazy.image.-loaded").attr("href");
-                String productLink=row.select("a.link").attr("href");
-                String productdecrption=row.select("span.name").text();
-                String productPrice=row.select("span.price").text();
-                    if (doc.select("section.products.-mabaya div").equals("")){
 
-                    }else{
-                        Jumiaproduct.add(new Products(productdecrption,productPrice));
-                        Log.i("Error Add", "Error Adding products from web");
+//            }
+           String tex= doc.text();
 
-                    }
-
-
-            }
-
+            Jumiaproduct.add(new Products(tex,tex));
         } catch (IOException e) {
             e.printStackTrace();
         }
