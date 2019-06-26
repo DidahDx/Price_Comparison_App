@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="200dp"
     android:orientation="horizontal"
     android:paddingTop="14dp"
     android:paddingBottom="12dp"
@@ -17,8 +17,8 @@
     <!-- Image to show the product image -->
     <ImageView
         android:id="@+id/product_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
         android:layout_margin="4dp"
         android:layout_gravity="center_vertical"
         android:gravity="center"
@@ -45,10 +45,10 @@
                 <!--  website logo image -->
                 <ImageView
                     android:id="@+id/website_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
                     android:layout_toLeftOf="@id/website_name"
-                    android:background="@drawable/ic_shopping_cart"
+
                     />
 
                 <!--  website name  -->
@@ -63,7 +63,6 @@
                     android:textAllCaps="true"
                     android:textColor="@color/textColorEarthquakeDetails"
                     android:textSize="12sp"
-                    android:text="Web name"
                     tools:text="website Name" />
 
 

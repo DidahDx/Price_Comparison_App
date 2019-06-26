@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
+    android:layout_height="380dp"
     android:paddingTop="14dp"
     android:paddingBottom="12dp"
     android:paddingStart="16dp"
@@ -33,10 +33,10 @@
             <!--  website logo image -->
             <ImageView
                 android:id="@+id/website_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
                 android:layout_toLeftOf="@id/website_name"
-                android:background="@drawable/ic_shopping_cart" />
+                />
 
             <!--  website name  -->
             <TextView
@@ -47,7 +47,7 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:text="Web name"
+
                 android:textAllCaps="true"
                 android:textColor="@color/textColorEarthquakeDetails"
                 android:textSize="12sp"
