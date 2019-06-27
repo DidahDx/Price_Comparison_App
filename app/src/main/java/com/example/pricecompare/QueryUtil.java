@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class QueryUtil {
@@ -130,7 +131,9 @@ public class QueryUtil {
             // build up a list of Product objects with the corresponding data.
             Document doc= null;
             try {
-                doc = Jsoup.connect("https://www.jumia.co.ke/oppo/?q=a7").get();
+//                 doc = Jsoup.connect("https://www.jumia.co.ke").data("header-search-input", "earphone samsung").post();
+                doc = Jsoup.connect("https://www.jumia.co.ke/catalog/?q=samsung+a70").get();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 // If an error is thrown when executing any of the above statements in the "try" block,
@@ -140,26 +143,39 @@ public class QueryUtil {
             }
 
             for (Element row:doc.select("section.products.-mabaya div.sku.-gallery")) {
-                Products pro = null;
+                Products pro;
 
                 if (row.select("span.name").text().equals("")){
                     continue;
                 }else{
                     String imageurl=row.select("img[src]").attr("abs:src");
                     String productLink=row.select("a.link").attr("href");
-
-
+                    String priceOld=row.select("span.price.-old").text();
                     String productdecrption=row.select("span.name").text();
-                    String productPrice=row.select("span.price").text();
+                    String NewPrice=row.select("span.price").text();
                     String imglogo="https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png";
 
-                    pro = new Products(productdecrption,productPrice,imageurl,productLink,imglogo);
+                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
                 }
 
                 products.add(pro);
 
-//                sorting
-//                Collections.sort(products,ArrayList<productPrice> productPrice);
+                //    used in sorting
+                Collections.sort(products, new Comparator<Products>() {
+                    @Override
+                    public int compare(Products o1, Products o2) {
+                        String p1=o1.PriceNew;
+                        String p2=o2.PriceNew;
+
+                        //removing unwanted KSH and , before sorting
+                        p1=p1.replace("KSh","");
+                        p1=p1.replace(",","");
+                        p2=p2.replace("KSh","");
+                        p2=p2.replace(",","");
+
+                        return p1.compareTo(p2);
+                    }
+                });
             }
 
         // Return the list of products
