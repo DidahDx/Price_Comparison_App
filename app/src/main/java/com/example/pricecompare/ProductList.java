@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     ArrayList<Products> product;
 
     ProgressBar progressBar;
+    int alreadySearched=0;
 
     static String url="https://www.jumia.co.ke/oppo/?q=a7";
 
@@ -69,18 +71,36 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
         if (networkInfo !=null && networkInfo.isConnected()){
 
-            getSupportLoaderManager().initLoader(100,null ,this).forceLoad();
+            if(alreadySearched==0) {
+                getSupportLoaderManager().initLoader(100, null, this).forceLoad();
+                alreadySearched=1;
+            }
         }else{
             progressBar.setVisibility(View.GONE);
 //            emptyState.setText("No network Connection");
         }
 
+
     }
 
+    //saving instance for before rotation
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("alreadySearch",alreadySearched);
+        super.onSaveInstanceState(outState);
+    }
+
+    //restoring instaces after rotation
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        alreadySearched=savedInstanceState.getInt("alreadySearch");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     //used to switch the view
     private void switchView() {
@@ -216,5 +236,10 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         }
     };
+
+
+    //
+    public void queryProducts(){
+    }
 
 }
