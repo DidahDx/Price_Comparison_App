@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListProductAdapter extends ArrayAdapter<Products> {
-    Activity context;
+
 
     public ListProductAdapter(@NonNull Activity context, @NonNull ArrayList<Products> objects) {
         super(context, 0, objects);
-        this.context=context;
     }
 
     @NonNull
@@ -39,10 +38,13 @@ public class ListProductAdapter extends ArrayAdapter<Products> {
         TextView productDescrption=listview.findViewById(R.id.product_description);
         productDescrption.setText(currentProduct.getProductDescription());
 
-        TextView price=listview.findViewById(R.id.product_price);
-        price.setText(currentProduct.getPrice());
+        TextView NewPrice=listview.findViewById(R.id.new_price);
+        NewPrice.setText(currentProduct.getPriceNew());
 
-        ImageView img=(ImageView) listview.findViewById(R.id.product_image);
+        TextView OldPrice=listview.findViewById(R.id.old_price);
+        OldPrice.setText(currentProduct.getPriceOld());
+
+        ImageView img= listview.findViewById(R.id.product_image);
 
         String url =currentProduct.getImageProduct();
         Picasso.get().load(url).into(img);

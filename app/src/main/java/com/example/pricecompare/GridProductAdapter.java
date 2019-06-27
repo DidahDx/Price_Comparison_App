@@ -37,8 +37,13 @@ public class GridProductAdapter extends ArrayAdapter<Products> {
         TextView productDescrption=listview.findViewById(R.id.product_description);
         productDescrption.setText(currentProduct.getProductDescription());
 
-        TextView price=listview.findViewById(R.id.product_price);
-        price.setText(currentProduct.getPrice());
+
+
+        TextView NewPrice=listview.findViewById(R.id.new_price);
+        NewPrice.setText(currentProduct.getPriceNew());
+
+        TextView OldPrice=listview.findViewById(R.id.old_price);
+        OldPrice.setText(currentProduct.getPriceOld());
 
         ImageView img=listview.findViewById(R.id.product_image);
 
