@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/product_price"
+                    android:id="@+id/new_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -99,7 +99,7 @@
                     tools:text="$12000" />
 
                 <TextView
-                    android:id="@+id/prevoius_product"
+                    android:id="@+id/old_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
