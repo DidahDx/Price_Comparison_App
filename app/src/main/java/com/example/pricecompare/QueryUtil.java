@@ -26,8 +26,10 @@ public class QueryUtil {
 
     public static final String LOG_TAG =QueryUtil.class.getSimpleName();
 
+    static String url;
 
     public QueryUtil(){
+
     }
 
 
@@ -35,6 +37,8 @@ public class QueryUtil {
      * Query the online website and return an {@link List} object to represent a single earthquake.
      */
     public static List<Products> fetchWebsiteData(String requestUrl) {
+
+        url=requestUrl;
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -132,7 +136,7 @@ public class QueryUtil {
             Document doc= null;
             try {
 //                 doc = Jsoup.connect("https://www.jumia.co.ke").data("header-search-input", "earphone samsung").post();
-                doc = Jsoup.connect("https://www.jumia.co.ke/catalog/?q=samsung+a70").get();
+                doc = Jsoup.connect(url).get();
 
             } catch (IOException e) {
                 e.printStackTrace();

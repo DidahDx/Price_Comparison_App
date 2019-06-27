@@ -46,7 +46,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     ProgressBar progressBar;
     int alreadySearched=0;
 
-    static String url="https://www.jumia.co.ke/oppo/?q=a7";
+    static String url="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         list_stub=findViewById(R.id.stub_list);
         grid_stub=findViewById(R.id.stub_grid);
 
-
+        Bundle bundle=getIntent().getExtras();
+        url=bundle.getString("url");
 
         list_stub.inflate();
         grid_stub.inflate();
