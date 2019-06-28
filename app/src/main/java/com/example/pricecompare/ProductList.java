@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +22,6 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.pricecompare.jumia.jumiaScrape;
 
 import java.util.ArrayList;
 
@@ -46,7 +42,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     ProgressBar progressBar;
     int alreadySearched=0;
 
-    static String url="";
+    static String JumiaUrl ="";
+    static String kilimallUrl="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +53,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         grid_stub=findViewById(R.id.stub_grid);
 
         Bundle bundle=getIntent().getExtras();
-        url=bundle.getString("url");
+        JumiaUrl =bundle.getString("JumiaUrl");
+        kilimallUrl=bundle.getString("kilimallUrl");
 
         list_stub.inflate();
         grid_stub.inflate();
@@ -203,7 +201,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         @Nullable
         @Override
         public ArrayList<Products> loadInBackground() {
-            ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(url);
+            ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(JumiaUrl,kilimallUrl);
 //            ArrayList<Products>  prod= (ArrayList<Products>) jumiaScrape.getData();
 
             return prod;
@@ -232,7 +230,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             String url=pro.getUrlLink();
 
             Intent i=new Intent(ProductList.this,webView.class);
-            i.putExtra("url",url);
+            i.putExtra("UrlWebLink",url);
             startActivity(i);
 
         }

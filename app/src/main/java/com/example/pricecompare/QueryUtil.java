@@ -27,6 +27,7 @@ public class QueryUtil {
     public static final String LOG_TAG =QueryUtil.class.getSimpleName();
 
     static String url;
+    static String kilUrl;
 
     public QueryUtil(){
 
@@ -36,8 +37,9 @@ public class QueryUtil {
     /**
      * Query the online website and return an {@link List} object to represent a single earthquake.
      */
-    public static List<Products> fetchWebsiteData(String requestUrl) {
+    public static List<Products> fetchWebsiteData(String requestUrl,String kiliUrl) {
 
+        kilUrl=kiliUrl;
         url=requestUrl;
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -134,9 +136,11 @@ public class QueryUtil {
 
             // build up a list of Product objects with the corresponding data.
             Document doc= null;
+            Document docKili=null;
             try {
 //                 doc = Jsoup.connect("https://www.jumia.co.ke").data("header-search-input", "earphone samsung").post();
                 doc = Jsoup.connect(url).get();
+                docKili=Jsoup.connect(kilUrl).get();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,6 +150,7 @@ public class QueryUtil {
                 Log.e("QueryUtil", "Problem parsing  results", e);
             }
 
+            //jumia webscrapiing
             for (Element row:doc.select("section.products.-mabaya div.sku.-gallery")) {
                 Products pro;
 
@@ -181,6 +186,55 @@ public class QueryUtil {
                     }
                 });
             }
+
+
+
+            //kilimall webscraping
+        for (Element row:docKili.select("ul.list_pic li.item")) {
+            Products pro1;
+            String imageurl;
+
+            if (row.select("em.sale-price").text().equals("")&& row.select("img[src]").attr("abs:src").equals("") &&
+                    row.select("div.goods-pic a[data-src]").attr("abs:data-src").equals("") ){
+                continue;
+            }else{
+
+                if (!row.select("div.goods-pic a[data-src]").attr("abs:data-src").equals("")){
+                    imageurl=row.select("div.goods-pic a[data-src]").attr("abs:data-src");
+                }else{
+                    imageurl=row.select("img[src]").attr("abs:src");
+                }
+
+                String productLink=row.select("a.lazyload").attr("href");
+                String priceOld=row.select("div.goods-discount").text();
+                String productdecrption=row.select("a").text();
+                String NewPrice=row.select("em.sale-price").text();
+                String imglogo="https://image.kilimall.com/kenya/shop/common/05850520183675844.png";
+
+                pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+            }
+
+            products.add(pro1);
+
+            //    used in sorting
+            Collections.sort(products, new Comparator<Products>() {
+                @Override
+                public int compare(Products o1, Products o2) {
+                    String p1=o1.PriceNew;
+                    String p2=o2.PriceNew;
+
+                    //removing unwanted KSH and , before sorting
+                    p1=p1.replace("KSh","");
+                    p1=p1.replace(",","");
+                    p2=p2.replace("KSh","");
+                    p2=p2.replace(",","");
+
+                    return p1.compareTo(p2);
+                }
+            });
+        }
+
+
 
         // Return the list of products
         return products;

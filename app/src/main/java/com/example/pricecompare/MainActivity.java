@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     static String jumiaUrl;
+    static String kilimallUrl;
     EditText editSearch;
 
     @Override
@@ -28,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buildJumiaUrl();
+                buildKilimallUrl();
+                buildMasokoUrl();
                 Intent intent=new Intent(MainActivity.this,ProductList.class);
-                intent.putExtra("url",jumiaUrl);
+                intent.putExtra("JumiaUrl",jumiaUrl);
+                intent.putExtra("kilimallUrl",kilimallUrl);
                 startActivity(intent);
             }
         });
@@ -45,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
             switch(actionId){
                 case EditorInfo.IME_ACTION_SEARCH:
                     buildJumiaUrl();
+                    buildKilimallUrl();
+                    buildMasokoUrl();
                     Intent i =new Intent(MainActivity.this,ProductList.class);
-                    i.putExtra("url",jumiaUrl);
+                    i.putExtra("JumiaUrl",jumiaUrl);
+                    i.putExtra("kilimallUrl",kilimallUrl);
                     startActivity(i);
                     break;
             }
@@ -54,21 +61,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    //used to build the jumia url link
+    //used to build the JumiaUrl link
     public void buildJumiaUrl(){
       jumiaUrl="https://www.jumia.co.ke/catalog/?q=";
         String s=editSearch.getText().toString();
         s=s.replace(" ","+");
+
+
         jumiaUrl+=s;
 
     }
 
-    //used to build the Kilimal url link
+    //used to build the Kilimal Url link
     public void buildKilimallUrl(){
+        kilimallUrl="https://www.kilimall.co.ke/?act=search&keyword=";
+       String s=editSearch.getText().toString();
+        s=s.replace(" ","+");
+        kilimallUrl+=s;
 
     }
 
-    //used to build the masoko url link
+    //used to build the masoko Url link
     public void buildMasokoUrl(){
 
     }
