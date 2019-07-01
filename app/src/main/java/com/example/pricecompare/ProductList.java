@@ -58,8 +58,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         list_stub=findViewById(R.id.stub_list);
         grid_stub=findViewById(R.id.stub_grid);
 
-        ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
 
         Bundle bundle=getIntent().getExtras();
         JumiaUrl =bundle.getString("JumiaUrl");
@@ -81,6 +79,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             @Override
             public void onClick(View v) {
 
+                //checking network before reloading
                 ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
                 if (networkInfo !=null && networkInfo.isConnected()) {
@@ -88,6 +87,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                     emptyState.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     tryAgain.setVisibility(View.GONE);
+                }else{
+                    emptyState.setText(getString(R.string.no_network));
+                    emptyState.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -100,6 +102,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //checking network connectivity
+        ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
         if (networkInfo !=null && networkInfo.isConnected()){
 
             if(alreadySearched==0) {
@@ -111,10 +115,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             emptyState.setText(getString(R.string.no_network));
             tryAgain.setVisibility(View.VISIBLE);
         }
-
     }
-
-
 
     //saving instances for before rotation
     @Override
@@ -210,11 +211,24 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     @Override
     public void onLoadFinished(@NonNull Loader<ArrayList<Products>> loader, ArrayList<Products> data) {
         progressBar.setVisibility(View.GONE);
-        if (data!=null){
+
+        if (data==null){
             UpdateUi(data);
         }else {
             emptyState.setText(getString(R.string.no_data));
+            tryAgain.setVisibility(View.VISIBLE);
         }
+
+        //when there is an error loading data
+
+        if (data == null) throw new AssertionError();
+        if ( data.size() <= 0) {
+
+            emptyState.setText(getString(R.string.load_error));
+            emptyState.setVisibility(View.VISIBLE);
+            tryAgain.setVisibility(View.VISIBLE);
+        }
+
     }
 
 
@@ -248,8 +262,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         public void deliverResult(ArrayList<Products> data) {
             // We’ll save the data for later retrieval
             produ = data;
-            // We can do any pre-processing we want here
-            // Just remember this is on the UI thread so nothing lengthy!
+
             super.deliverResult(data);
         }
 
@@ -259,39 +272,41 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         public ArrayList<Products> loadInBackground() {
             ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(JumiaUrl,kilimallUrl,MasokoUrl);
 
+            //do not sort when there is no data
+            if(prod!=null) {
 
-          //    used in sorting
-            Collections.sort(prod, new Comparator<Products>() {
-                @Override
-                public int compare(Products o1, Products o2) {
-                    String p1=o1.getPriceNew().trim();
-                    String p2=o2.getPriceNew().trim();
+                //    used in sorting
+                Collections.sort(prod, new Comparator<Products>() {
+                    @Override
+                    public int compare(Products o1, Products o2) {
+                        String p1 = o1.getPriceNew().trim();
+                        String p2 = o2.getPriceNew().trim();
 
 
-                    //removing unwanted KSH , KES  and , before sorting
-                    p1=p1.replace("KSh","");
-                    p1=p1.replace("KES","");
-                    p1=p1.replace(",","");
-                    if (p1.indexOf('-') != -1){
-                        p1=p1.replace(p1.substring(p1.indexOf('-')+1),"");
-                        p1=p1.replace("-","");
+                        //removing unwanted KSH , KES  and , before sorting
+                        p1 = p1.replace("KSh", "");
+                        p1 = p1.replace("KES", "");
+                        p1 = p1.replace(",", "");
+                        if (p1.indexOf('-') != -1) {
+                            p1 = p1.replace(p1.substring(p1.indexOf('-') + 1), "");
+                            p1 = p1.replace("-", "");
+                        }
+                        p1 = p1.trim();
+
+                        p2 = p2.replace("KSh", "");
+                        p2 = p2.replace(",", "");
+                        p2 = p2.replace("KES", "");
+                        if (p2.indexOf('-') != -1) {
+                            p2 = p2.replace(p2.substring(p2.indexOf('-') + 1), "");
+                            p2 = p2.replace("-", "");
+                        }
+                        p2 = p2.trim();
+
+                        return Integer.valueOf(p1) - (Integer.valueOf(p2));
                     }
-                    p1=p1.trim();
+                });
 
-                    p2=p2.replace("KSh","");
-                    p2=p2.replace(",","");
-                    p2=p2.replace("KES","");
-                    if (p2.indexOf('-') != -1){
-                        p2=p2.replace(p2.substring(p2.indexOf('-')+1),"");
-                        p2=p2.replace("-","");
-                    }
-                    p2=p2.trim();
-
-                    return  Integer.valueOf(p1)-(Integer.valueOf(p2));
-                }
-            });
-
-
+            }
             produ=prod;
 
             return prod;
