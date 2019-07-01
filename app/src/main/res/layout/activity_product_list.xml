@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/empty_state"
         android:layout_centerInParent="true"
+
         />
     <Button
         android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
         android:layout_below="@id/empty_state"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         android:text="@string/try_again"/>
 
     <ViewStub

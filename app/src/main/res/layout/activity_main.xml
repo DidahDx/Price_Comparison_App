@@ -8,18 +8,19 @@
 
 <EditText
     android:layout_width="match_parent"
-    android:layout_marginRight="20dp"
+    android:layout_marginRight="40dp"
     android:layout_marginLeft="20dp"
     android:layout_height="54dp"
     android:id="@+id/product_name"
-    android:layout_above="@+id/search"
+    android:layout_above="@id/search"
+    android:hint="@string/search_hint"
     android:inputType="text"
     android:imeOptions="actionSearch" />
 
 <Button
-
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:drawableRight="@drawable/ic_search"
     android:layout_centerInParent="true"
     android:text="Search"
     android:id="@+id/search"

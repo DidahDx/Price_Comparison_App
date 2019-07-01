@@ -12,5 +12,5 @@
     <item android:id="@+id/item1"
         android:title="switch Menu"
         android:icon="@drawable/ic_four_squares"
-        app:showAsAction="always"/>
+        />
 </menu>
