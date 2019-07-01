@@ -77,25 +77,25 @@ public class MainActivity extends AppCompatActivity {
     //used to build the JumiaUrl link
     public void buildJumiaUrl(){
       jumiaUrl="https://www.jumia.co.ke/catalog/?q=";
-        String s=editSearch.getText().toString().trim();
-        s=s.replace(" ","+");
-        jumiaUrl+=s;
+        jumiaUrl+=buildUrlEnd();
     }
 
     //used to build the Kilimal Url link
     public void buildKilimallUrl(){
         kilimallUrl="https://www.kilimall.co.ke/?act=search&keyword=";
-       String s=editSearch.getText().toString().trim();
-        s=s.replace(" ","+");
-        kilimallUrl+=s;
+        kilimallUrl+=buildUrlEnd();
     }
 
     //used to build the masoko Url link
     public void buildMasokoUrl(){
         MasokoUrl="https://www.masoko.com/catalogsearch/result/index/?product_list_dir=asc&product_list_order=price&q=";
-        String s=editSearch.getText().toString().trim();
-        s=s.replace(" ","+");
-        MasokoUrl+=s;
+        MasokoUrl+=buildUrlEnd();
     }
 
+    //build last part of url
+    public String buildUrlEnd(){
+        String s=editSearch.getText().toString().trim();
+        s=s.replace(" ","+");
+        return s;
+    }
 }
