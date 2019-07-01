@@ -2,9 +2,6 @@ package com.example.pricecompare;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,8 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class QueryUtil {
@@ -28,6 +23,7 @@ public class QueryUtil {
 
     static String url;
     static String kilUrl;
+    static String masokUrl;
 
     public QueryUtil(){
 
@@ -37,10 +33,11 @@ public class QueryUtil {
     /**
      * Query the online website and return an {@link List} object to represent a single earthquake.
      */
-    public static List<Products> fetchWebsiteData(String requestUrl,String kiliUrl) {
+    public static List<Products> fetchWebsiteData(String requestUrl,String kiliUrl,String masokoUrl) {
 
         kilUrl=kiliUrl;
         url=requestUrl;
+        masokUrl=masokoUrl;
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -137,59 +134,17 @@ public class QueryUtil {
             // build up a list of Product objects with the corresponding data.
             Document doc= null;
             Document docKili=null;
+            Document docMasoko=null;
             try {
 //                 doc = Jsoup.connect("https://www.jumia.co.ke").data("header-search-input", "earphone samsung").post();
                 doc = Jsoup.connect(url).get();
                 docKili=Jsoup.connect(kilUrl).get();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                // If an error is thrown when executing any of the above statements in the "try" block,
-                // catch the exception here, so the app doesn't crash. Print a log message
-                // with the message from the exception.
-                Log.e("QueryUtil", "Problem parsing  results", e);
-            }
-
-            //jumia webscrapiing
-            for (Element row:doc.select("section.products.-mabaya div.sku.-gallery")) {
-                Products pro;
-
-                if (row.select("span.name").text().equals("")){
-                    continue;
-                }else{
-                    String imageurl=row.select("img[src]").attr("abs:src");
-                    String productLink=row.select("a.link").attr("href");
-                    String priceOld=row.select("span.price.-old").text();
-                    String productdecrption=row.select("span.name").text();
-                    String NewPrice=row.select("span.price").text();
-                    String imglogo="https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png";
-
-                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
-                }
-
-                products.add(pro);
-
-                //    used in sorting
-                Collections.sort(products, new Comparator<Products>() {
-                    @Override
-                    public int compare(Products o1, Products o2) {
-                        String p1=o1.PriceNew;
-                        String p2=o2.PriceNew;
-
-                        //removing unwanted KSH and , before sorting
-                        p1=p1.replace("KSh","");
-                        p1=p1.replace(",","");
-                        p2=p2.replace("KSh","");
-                        p2=p2.replace(",","");
-
-                        return p1.compareTo(p2);
-                    }
-                });
-            }
+                docMasoko=Jsoup.connect(masokUrl).get();
 
 
 
-            //kilimall webscraping
+
+        //kilimall webscraping
         for (Element row:docKili.select("ul.list_pic li.item")) {
             Products pro1;
             String imageurl;
@@ -215,26 +170,67 @@ public class QueryUtil {
             }
 
             products.add(pro1);
-
-            //    used in sorting
-            Collections.sort(products, new Comparator<Products>() {
-                @Override
-                public int compare(Products o1, Products o2) {
-                    String p1=o1.PriceNew;
-                    String p2=o2.PriceNew;
-
-                    //removing unwanted KSH and , before sorting
-                    p1=p1.replace("KSh","");
-                    p1=p1.replace(",","");
-                    p2=p2.replace("KSh","");
-                    p2=p2.replace(",","");
-
-                    return p1.compareTo(p2);
-                }
-            });
         }
 
+        //masoko webscraping
+        for (Element row:docMasoko.select("ol.products.list.items.product-items li.item.product.product-item")) {
+            Products pro2;
+            String imageurl;
 
+            if (row.select("a.product.photo.product-item-photo").attr("href").equals("") ){
+                continue;
+            }else{
+
+                imageurl=row.select("img[src]").attr("abs:src");
+                String productLink=row.select("a.product.photo.product-item-photo").attr("href");
+                String priceOld=row.select("span.old-price").text();
+                String productdecrption=row.select("a.product-item-link").text();
+                String NewPrice=row.select("span.price").text();
+                String imglogo="https://www.masoko.com/media/logo/stores/1/masoko_fest_logo.png";
+
+                priceOld=priceOld.replace("Price","");
+                NewPrice=NewPrice.replace(priceOld,"");
+
+                if (NewPrice.indexOf('.') != -1){
+                    NewPrice= NewPrice.substring(0,NewPrice.length()-3);
+                }
+
+
+                pro2 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+            }
+            products.add(pro2);
+        }
+
+            //jumia webscrapiing
+            for (Element row:doc.select("section.products.-mabaya div.sku.-gallery")) {
+                Products pro;
+
+                if (row.select("span.name").text().equals("")){
+                    continue;
+                }else{
+                    String imageurl=row.select("img[src]").attr("abs:src");
+                    String productLink=row.select("a.link").attr("href");
+                    String priceOld=row.select("span.price.-old").text();
+                    String productdecrption=row.select("span.name").text();
+                    String NewPrice=row.select("span.price").text();
+                    String imglogo="https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png";
+                    NewPrice=NewPrice.replace(priceOld,"");
+
+
+                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+                }
+
+                products.add(pro);
+            }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                // If an error is thrown when executing any of the above statements in the "try" block,
+                // catch the exception here, so the app doesn't crash. Print a log message
+                // with the message from the exception.
+                Log.e("QueryUtil", "Problem parsing  results", e);
+
+            }
 
         // Return the list of products
         return products;
