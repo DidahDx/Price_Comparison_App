@@ -14,15 +14,31 @@
     android:paddingEnd="16dp"
     android:paddingRight="16dp">
 
-    <!-- Image to show the product image -->
-    <ImageView
-        android:id="@+id/product_image"
+    <RelativeLayout
         android:layout_width="95dp"
-        android:layout_height="95dp"
-        android:layout_margin="4dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:background="@drawable/ic_shopping_cart"/>
+        android:layout_height="115dp"
+        android:layout_marginTop="28dp"
+        >
+
+        <!-- Image to show the product image -->
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            />
+
+        <ProgressBar
+            android:id="@+id/image_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
+
 
 
     <LinearLayout
@@ -93,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textColor="@color/textColorEarthquakeDetails"
+                    android:textColor="#000"
                     android:textSize="12sp"
                     android:text="$435678"
                     tools:text="$12000" />
@@ -103,7 +119,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textColor="@color/textColorEarthquakeDetails"
+                    android:textColor="#fff"
+                    android:shadowColor="#000000"
+                    android:shadowDx="0.0"
+                    android:shadowDy="0.0"
+                    android:shadowRadius="2.0"
                     android:textSize="12sp"
                     android:text="3000"
                     tools:text="3000"
@@ -141,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/save"
+            android:background="@drawable/share"
             android:layout_alignParentEnd="true" />
 
     <LinearLayout
@@ -162,7 +182,7 @@
             android:id="@+id/share"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/share"/>
+            android:background="@drawable/save"/>
 
     </RelativeLayout>
 
