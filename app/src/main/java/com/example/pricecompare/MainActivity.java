@@ -8,12 +8,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     static String jumiaUrl;
     static String kilimallUrl;
+    static String MasokoUrl;
     EditText editSearch;
 
     @Override
@@ -28,13 +31,18 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!editSearch.getText().toString().trim().isEmpty()){
                 buildJumiaUrl();
                 buildKilimallUrl();
                 buildMasokoUrl();
                 Intent intent=new Intent(MainActivity.this,ProductList.class);
                 intent.putExtra("JumiaUrl",jumiaUrl);
                 intent.putExtra("kilimallUrl",kilimallUrl);
+                intent.putExtra("MasokoUrl",MasokoUrl);
                 startActivity(intent);
+            }else {
+                 Toast.makeText(MainActivity.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -48,13 +56,18 @@ public class MainActivity extends AppCompatActivity {
 
             switch(actionId){
                 case EditorInfo.IME_ACTION_SEARCH:
+                    if(!editSearch.getText().toString().trim().isEmpty()){
                     buildJumiaUrl();
                     buildKilimallUrl();
                     buildMasokoUrl();
                     Intent i =new Intent(MainActivity.this,ProductList.class);
                     i.putExtra("JumiaUrl",jumiaUrl);
                     i.putExtra("kilimallUrl",kilimallUrl);
+                    i.putExtra("MasokoUrl",MasokoUrl);
                     startActivity(i);
+            }else {
+                Toast.makeText(MainActivity.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
+            }
                     break;
             }
             return false;
@@ -64,26 +77,25 @@ public class MainActivity extends AppCompatActivity {
     //used to build the JumiaUrl link
     public void buildJumiaUrl(){
       jumiaUrl="https://www.jumia.co.ke/catalog/?q=";
-        String s=editSearch.getText().toString();
+        String s=editSearch.getText().toString().trim();
         s=s.replace(" ","+");
-
-
         jumiaUrl+=s;
-
     }
 
     //used to build the Kilimal Url link
     public void buildKilimallUrl(){
         kilimallUrl="https://www.kilimall.co.ke/?act=search&keyword=";
-       String s=editSearch.getText().toString();
+       String s=editSearch.getText().toString().trim();
         s=s.replace(" ","+");
         kilimallUrl+=s;
-
     }
 
     //used to build the masoko Url link
     public void buildMasokoUrl(){
-
+        MasokoUrl="https://www.masoko.com/catalogsearch/result/index/?product_list_dir=asc&product_list_order=price&q=";
+        String s=editSearch.getText().toString().trim();
+        s=s.replace(" ","+");
+        MasokoUrl+=s;
     }
 
 }
