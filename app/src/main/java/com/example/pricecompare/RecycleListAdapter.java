@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -114,14 +115,24 @@ public class RecycleListAdapter extends RecyclerView.Adapter<RecycleListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
 
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
-        Picasso.get().load(currentProduct.getImageProduct()).into(holder.img);
+        Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
         Picasso.get().load(currentProduct.getImageLogo()).into(holder.imgLogo);
 
     }
