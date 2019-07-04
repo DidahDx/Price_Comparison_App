@@ -14,9 +14,21 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RecycleListProductAdapter extends RecyclerView.Adapter<RecycleListProductAdapter.ListViewHolder>{
+public class RecycleListAdapter extends RecyclerView.Adapter<RecycleListAdapter.ListViewHolder>{
 
     ArrayList<Products> products;
+
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+        void onShareClick(int position);
+        void onSaveClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener=listener;
+    }
 
 
     public static class ListViewHolder extends RecyclerView.ViewHolder{
@@ -29,7 +41,7 @@ public class RecycleListProductAdapter extends RecyclerView.Adapter<RecycleListP
        public ImageView share;
         public ImageView save;
 
-        public ListViewHolder(@NonNull View itemView) {
+        public ListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             productDescrption=itemView.findViewById(R.id.product_description);
@@ -41,11 +53,52 @@ public class RecycleListProductAdapter extends RecyclerView.Adapter<RecycleListP
             share=itemView.findViewById(R.id.share);
             save=itemView.findViewById(R.id.save);
 
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null){
+                        int position=getAdapterPosition();
+                        if (position!=RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+
+                }
+            });
+
+            //click listener for share
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null){
+                        int position=getAdapterPosition();
+                        if (position!=RecyclerView.NO_POSITION){
+                            listener.onShareClick(position);
+                        }
+                    }
+
+                }
+            });
+
+            //click listener for save
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null){
+                        int position=getAdapterPosition();
+                        if (position!=RecyclerView.NO_POSITION){
+                            listener.onSaveClick(position);
+                        }
+                    }
+                }
+            });
+
         }
     }
 
 
-    public RecycleListProductAdapter(ArrayList<Products> prod){
+    public RecycleListAdapter(ArrayList<Products> prod){
 
         products=prod;
     }
@@ -55,7 +108,7 @@ public class RecycleListProductAdapter extends RecyclerView.Adapter<RecycleListP
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
       View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
-      ListViewHolder listViewHolder=new ListViewHolder(v);
+      ListViewHolder listViewHolder=new ListViewHolder(v,mListener);
 
       return listViewHolder;
     }
