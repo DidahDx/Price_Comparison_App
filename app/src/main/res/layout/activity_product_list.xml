@@ -16,8 +16,12 @@
 <ProgressBar
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:visibility="visible"
+    android:indeterminate="true"
     android:layout_centerInParent="true"
-    android:id="@+id/progress_circular"/>
+    android:id="@+id/progress_circular">
+
+</ProgressBar>
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,6 +52,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/stub_grid"
         android:inflatedId="@+id/showlayout"
-        android:layout="@layout/grid_view"/>
+        android:layout="@layout/recycle_grid"/>
 
 </RelativeLayout>
