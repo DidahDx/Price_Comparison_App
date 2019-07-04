@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/stub_list"
         android:inflatedId="@+id/showlayout"
-        android:layout="@layout/list_view"/>
+        android:layout="@layout/recylce_list"/>
 
     <ViewStub
         android:layout_width="match_parent"

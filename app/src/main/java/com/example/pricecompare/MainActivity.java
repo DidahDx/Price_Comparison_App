@@ -1,7 +1,9 @@
 package com.example.pricecompare;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -27,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         editSearch=  findViewById(R.id.product_name);
         editSearch.setOnEditorActionListener(onEditorActionListener);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        final Point size = new Point();
+        display.getSize(size);
+
+
+
         Button button=findViewById(R.id.search);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
                 buildJumiaUrl();
                 buildKilimallUrl();
                 buildMasokoUrl();
+
                 Intent intent=new Intent(MainActivity.this,ProductList.class);
                 intent.putExtra("JumiaUrl",jumiaUrl);
                 intent.putExtra("kilimallUrl",kilimallUrl);
                 intent.putExtra("MasokoUrl",MasokoUrl);
                 startActivity(intent);
             }else {
+                    Toast.makeText(MainActivity.this,"the width of the screen is"+size.x,Toast.LENGTH_LONG).show();
                  Toast.makeText(MainActivity.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
                 }
             }

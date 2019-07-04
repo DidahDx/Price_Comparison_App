@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +52,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     static String kilimallUrl="";
     static String MasokoUrl="";
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,12 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         rootList=findViewById(R.id.listView);
         rootGrid=findViewById(R.id.gridView);
+
+
+        recyclerView=findViewById(R.id.recycle_list);
+        layoutManager=new LinearLayoutManager(this);
+
+
 
         progressBar=findViewById(R.id.progress_circular);
         emptyState=findViewById(R.id.empty_state);
@@ -115,6 +126,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             emptyState.setText(getString(R.string.no_network));
             tryAgain.setVisibility(View.VISIBLE);
         }
+
+
+
     }
 
     //saving instances for before rotation
@@ -147,8 +161,12 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     //used to set the Adapter
     private void setAdapter() {
         if (VIEW_MODE_LISTVIEW==currentViewMode){
-            listAdapter=new ListProductAdapter(this,product);
-            rootList.setAdapter(listAdapter);
+            adapter=new RecycleListProductAdapter(product);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+//            listAdapter=new ListProductAdapter(this,product);
+//            rootList.setAdapter(listAdapter);
         }else{
             gridAdapter=new GridProductAdapter(this,product);
             rootGrid.setAdapter(gridAdapter);
@@ -212,10 +230,11 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     public void onLoadFinished(@NonNull Loader<ArrayList<Products>> loader, ArrayList<Products> data) {
         progressBar.setVisibility(View.GONE);
 
-        if (data==null){
+        if (data!=null){
             UpdateUi(data);
         }else {
             emptyState.setText(getString(R.string.no_data));
+            emptyState.setVisibility(View.VISIBLE);
             tryAgain.setVisibility(View.VISIBLE);
         }
 
@@ -319,8 +338,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         product=data;
         switchView();
 
-        rootList.setOnItemClickListener(onItemClickListener);
-        rootGrid.setOnItemClickListener(onItemClickListener);
+//        rootList.setOnItemClickListener(onItemClickListener);
+//        rootGrid.setOnItemClickListener(onItemClickListener);
     }
 
 
@@ -338,6 +357,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             startActivity(i);
 
         }
+
     };
 
 }
