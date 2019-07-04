@@ -25,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +54,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     static String MasokoUrl="";
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecycleListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -63,7 +64,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         list_stub=findViewById(R.id.stub_list);
         grid_stub=findViewById(R.id.stub_grid);
 
-
+        progressBar=findViewById(R.id.progress_circular);
+        progressBar.setVisibility(View.VISIBLE);
         Bundle bundle=getIntent().getExtras();
         JumiaUrl =bundle.getString("JumiaUrl");
         kilimallUrl=bundle.getString("kilimallUrl");
@@ -81,7 +83,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
 
 
-        progressBar=findViewById(R.id.progress_circular);
+
         emptyState=findViewById(R.id.empty_state);
         tryAgain=findViewById(R.id.try_again);
 
@@ -161,9 +163,40 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     //used to set the Adapter
     private void setAdapter() {
         if (VIEW_MODE_LISTVIEW==currentViewMode){
-            adapter=new RecycleListProductAdapter(product);
+            adapter=new RecycleListAdapter(product);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
+
+            adapter.setOnItemClickListener(new RecycleListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Products pro=product.get(position);
+                    String url=pro.getUrlLink();
+
+                    Intent i=new Intent(ProductList.this,webView.class);
+                    i.putExtra("UrlWebLink",url);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onShareClick(int position) {
+                    Products pro=product.get(position);
+                    String url=pro.getUrlLink();
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "I found this item in price Compare App \n"+url);
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+                    Toast.makeText(ProductList.this,"the share postion "+position,Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSaveClick(int position) {
+                     product.get(position);
+                    Toast.makeText(ProductList.this,"the postion "+position,Toast.LENGTH_SHORT).show();
+                }
+            });
 
 //            listAdapter=new ListProductAdapter(this,product);
 //            rootList.setAdapter(listAdapter);
