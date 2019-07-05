@@ -6,39 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProductList">
 
-    <!--<Toolbar-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/toolbar">-->
-
-    <!--</Toolbar>-->
-
-<ProgressBar
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:visibility="visible"
-    android:indeterminate="true"
-    android:layout_centerInParent="true"
-    android:id="@+id/progress_circular">
-
-</ProgressBar>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/empty_state"
-        android:layout_centerInParent="true"
-
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/try_again"
-        android:layout_below="@id/empty_state"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:text="@string/try_again"/>
 
     <ViewStub
         android:layout_width="match_parent"
@@ -53,5 +20,33 @@
         android:id="@+id/stub_grid"
         android:inflatedId="@+id/showlayout"
         android:layout="@layout/recycle_grid"/>
+
+
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+         />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_state"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/try_again"
+        android:visibility="gone"
+        android:layout_below="@id/empty_state"
+        android:layout_margin="25dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/try_again"/>
+
 
 </RelativeLayout>

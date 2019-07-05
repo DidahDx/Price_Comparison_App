@@ -1,6 +1,8 @@
-package com.example.pricecompare;
+package com.example.pricecompare.WebScraper;
 
 import android.util.Log;
+
+import com.example.pricecompare.Products;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,7 +35,7 @@ public class QueryUtil {
     /**
      * Query the online website and return an {@link List} object to represent a single earthquake.
      */
-    public static List<Products> fetchWebsiteData(String requestUrl,String kiliUrl,String masokoUrl) {
+    public static List<Products> fetchWebsiteData(String requestUrl, String kiliUrl, String masokoUrl) {
 
         kilUrl=kiliUrl;
         url=requestUrl;
@@ -163,6 +165,7 @@ public class QueryUtil {
                 String productLink=row.select("a.lazyload").attr("href");
                 String priceOld=row.select("div.goods-discount").text();
                 String productdecrption=row.select("a").text();
+                productdecrption=productdecrption.replace("Add to cart","");
                 String NewPrice=row.select("em.sale-price").text();
                 String imglogo="https://image.kilimall.com/kenya/shop/common/05850520183675844.png";
 

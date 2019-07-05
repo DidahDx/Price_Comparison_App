@@ -7,7 +7,7 @@
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    app:cardCornerRadius="19dp"
+    app:cardCornerRadius="10dp"
     android:paddingTop="14dp"
     android:paddingBottom="12dp"
     android:background="@drawable/item_background"

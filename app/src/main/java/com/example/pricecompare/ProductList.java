@@ -20,13 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.pricecompare.AdaptersHelper.RecycleGridAdapter;
+import com.example.pricecompare.AdaptersHelper.RecycleListAdapter;
+import com.example.pricecompare.WebScraper.QueryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     private ViewStub list_stub;
     private ViewStub grid_stub;
 
-
     private int currentViewMode=0;
 
     TextView emptyState;
@@ -44,7 +44,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     static final int VIEW_MODE_GRIDVIEW=1;
     ArrayList<Products> product;
 
-    ProgressBar progressBar;
+    ProgressBar progressBar1;
     Button tryAgain;
     int alreadySearched=0;
 
@@ -69,6 +69,10 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         grid_stub=findViewById(R.id.stub_grid);
 
 
+        progressBar1=findViewById(R.id.progress_circular);
+        emptyState=findViewById(R.id.empty_state);
+        tryAgain=findViewById(R.id.try_again);
+
         //getting urls links for websites
         Bundle bundle=getIntent().getExtras();
         JumiaUrl =bundle.getString("JumiaUrl");
@@ -86,10 +90,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         gridlayoutManager=new GridLayoutManager(this,2);
 
 
-        progressBar=findViewById(R.id.progress_circular);
-        progressBar.setVisibility(View.VISIBLE);
-        emptyState=findViewById(R.id.empty_state);
-        tryAgain=findViewById(R.id.try_again);
 
         //retry when the network fails
         tryAgain.setOnClickListener(new View.OnClickListener() {
@@ -102,11 +102,12 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 if (networkInfo !=null && networkInfo.isConnected()) {
                     getSupportLoaderManager().restartLoader(100, null,  ProductList.this);
                     emptyState.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar1.setVisibility(View.VISIBLE);
                     tryAgain.setVisibility(View.GONE);
                 }else{
                     emptyState.setText(getString(R.string.no_network));
                     emptyState.setVisibility(View.VISIBLE);
+                    progressBar1.setVisibility(View.GONE);
                 }
             }
         });
@@ -128,7 +129,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 alreadySearched=1;
             }
         }else{
-            progressBar.setVisibility(View.GONE);
+            progressBar1.setVisibility(View.GONE);
+            emptyState.setVisibility(View.VISIBLE);
             emptyState.setText(getString(R.string.no_network));
             tryAgain.setVisibility(View.VISIBLE);
         }
@@ -303,7 +305,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     //called when the background thread has finished loading
     @Override
     public void onLoadFinished(@NonNull Loader<ArrayList<Products>> loader, ArrayList<Products> data) {
-        progressBar.setVisibility(View.GONE);
+        progressBar1.setVisibility(View.GONE);
 
         if (data!=null){
             UpdateUi(data);
@@ -315,9 +317,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         //when there is an error loading data
 
-        if (data == null) throw new AssertionError();
         if ( data.size() <= 0) {
-
             emptyState.setText(getString(R.string.load_error));
             emptyState.setVisibility(View.VISIBLE);
             tryAgain.setVisibility(View.VISIBLE);
@@ -340,7 +340,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         ProductAsyncLoader(@NonNull Context context) {
             super(context);
         }
-
 
         @Override
         protected void onStartLoading() {
@@ -409,30 +408,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
     //used to update the xml layouts
     private void UpdateUi(ArrayList<Products> data) {
-
         product=data;
         switchView();
-
-//        rootList.setOnItemClickListener(onItemClickListener);
-//        rootGrid.setOnItemClickListener(onItemClickListener);
     }
-
-
-    //used to set item listener
-    //used to switch to the webView to show further details
-    AdapterView.OnItemClickListener onItemClickListener=new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            Products pro=product.get(position);
-            String url=pro.getUrlLink();
-
-            Intent i=new Intent(ProductList.this,webView.class);
-            i.putExtra("UrlWebLink",url);
-            startActivity(i);
-
-        }
-
-    };
 
 }
