@@ -146,6 +146,7 @@ public class QueryUtil {
 
 
 
+
         //kilimall webscraping
         for (Element row:docKili.select("ul.list_pic li.item")) {
             Products pro1;
