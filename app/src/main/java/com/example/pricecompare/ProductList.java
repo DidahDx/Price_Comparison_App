@@ -3,6 +3,7 @@ package com.example.pricecompare;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
@@ -33,41 +34,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_ONE;
+import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_TWO;
+
 public class ProductList extends AppCompatActivity  implements  LoaderManager.LoaderCallbacks<ArrayList<Products>> {
-    private ViewStub list_stub;
-    private ViewStub grid_stub;
 
-    private int currentViewMode=0;
-
-    TextView emptyState;
-    static final int VIEW_MODE_LISTVIEW=0;
-    static final int VIEW_MODE_GRIDVIEW=1;
+    private int currentViewMode=1;
     ArrayList<Products> product;
 
     ProgressBar progressBar1;
     Button tryAgain;
     int alreadySearched=0;
 
+    //url links set to blank
     static String JumiaUrl ="";
     static String kilimallUrl="";
     static String MasokoUrl="";
 
-    private RecyclerView recyclerView;
-    private RecycleListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
+    TextView emptyState;
     RecyclerView gridRecyclerView;
     private RecycleGridAdapter gridAdapter;
-    private RecyclerView.LayoutManager gridlayoutManager;
+    private GridLayoutManager gridlayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
 
-        list_stub=findViewById(R.id.stub_list);
-        grid_stub=findViewById(R.id.stub_grid);
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         progressBar1=findViewById(R.id.progress_circular);
         emptyState=findViewById(R.id.empty_state);
@@ -79,17 +73,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         kilimallUrl=bundle.getString("kilimallUrl");
         MasokoUrl=bundle.getString("MasokoUrl");
 
-        list_stub.inflate();
-        grid_stub.inflate();
-
-
-        recyclerView=findViewById(R.id.recycle_list);
-        layoutManager=new LinearLayoutManager(this);
-
-        gridRecyclerView=findViewById(R.id.recycle_grid);
-        gridlayoutManager=new GridLayoutManager(this,2);
-
-
+//        gridRecyclerView=findViewById(R.id.grid_layout);
+        gridRecyclerView=findViewById(R.id.rv);
+        gridlayoutManager=new GridLayoutManager(this,currentViewMode);
 
         //retry when the network fails
         tryAgain.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +100,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         //check the default view saved in the shared preference
         SharedPreferences sharedPreferences=getSharedPreferences("ViewMode",MODE_PRIVATE);
-        currentViewMode=sharedPreferences.getInt("currentViewMode",VIEW_MODE_LISTVIEW);
+        currentViewMode=sharedPreferences.getInt("currentViewMode",SPAN_COUNT_ONE);
 
         //used to display the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -135,8 +121,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             tryAgain.setVisibility(View.VISIBLE);
         }
 
-
-
     }
 
     //saving instances for before rotation
@@ -153,65 +137,13 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    //used to switch the view
-    private void switchView() {
-        if (VIEW_MODE_LISTVIEW==currentViewMode){
-            list_stub.setVisibility(View.VISIBLE);
-            grid_stub.setVisibility(View.GONE);
-        }else {
-            list_stub.setVisibility(View.GONE);
-            grid_stub.setVisibility(View.VISIBLE);
-        }
-
-        setAdapter();
-    }
 
     //used to set the Adapter
     private void setAdapter() {
-        if (VIEW_MODE_LISTVIEW==currentViewMode){
-            adapter=new RecycleListAdapter(product);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
 
-            adapter.setOnItemClickListener(new RecycleListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    Products pro=product.get(position);
-                    String url=pro.getUrlLink();
-
-                    Intent i=new Intent(ProductList.this,webView.class);
-                    i.putExtra("UrlWebLink",url);
-                    startActivity(i);
-                }
-
-                @Override
-                public void onShareClick(int position) {
-                    Products pro=product.get(position);
-                    String url=pro.getUrlLink();
-
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "I found this item in price Compare App \n"+url);
-                    sendIntent.setType("text/plain");
-                    startActivity(sendIntent);
-                    Toast.makeText(ProductList.this,"the share postion "+position,Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onSaveClick(int position) {
-                     product.get(position);
-                    Toast.makeText(ProductList.this,"the postion "+position,Toast.LENGTH_SHORT).show();
-                }
-            });
-
-//            listAdapter=new ListProductAdapter(this,product);
-//            rootList.setAdapter(listAdapter);
-        }else{
-
-            gridAdapter=new RecycleGridAdapter(product);
+            gridAdapter=new RecycleGridAdapter(product, gridlayoutManager);
             gridRecyclerView.setLayoutManager(gridlayoutManager);
             gridRecyclerView.setAdapter(gridAdapter);
-
 
             gridAdapter.setOnItemClickListener(new RecycleGridAdapter.OnItemClickListener() {
                 @Override
@@ -229,11 +161,11 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                     Products pro=product.get(position);
                     String url=pro.getUrlLink();
 
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "I found this item in price Compare App \n"+url);
-                    sendIntent.setType("text/plain");
-                    startActivity(sendIntent);
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "I found this item in price Compare App \n"+url);
+                    shareIntent.setType("text/plain");
+                    startActivity(shareIntent);
                     Toast.makeText(ProductList.this,"the share postion "+position,Toast.LENGTH_SHORT).show();
                 }
 
@@ -244,13 +176,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 }
             });
 
-
-//            gridAdapter=new GridProductAdapter(this,product);
-//            rootGrid.setAdapter(gridAdapter);
-        }
     }
-
-
 
     //setting the menu with the switch mode option
     @Override
@@ -263,15 +189,19 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.item1:
-                if (VIEW_MODE_LISTVIEW==currentViewMode){
-                    currentViewMode=VIEW_MODE_GRIDVIEW;
+            case R.id.menu_switch_layout:
+                if (SPAN_COUNT_ONE==currentViewMode){
+                    currentViewMode=SPAN_COUNT_TWO;
+                    gridlayoutManager.setSpanCount(currentViewMode);
                 }else{
-                    currentViewMode=VIEW_MODE_LISTVIEW;
+                    currentViewMode=SPAN_COUNT_ONE;
+                    gridlayoutManager.setSpanCount(currentViewMode);
                 }
 
+
+                switchIcon(item);
                 //switch the view
-                switchView();
+                SwitchLayout();
 
                 //save the current view mode
                 SharedPreferences sharedPreferences=getSharedPreferences("ViewMode",MODE_PRIVATE);
@@ -292,6 +222,21 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //used to switch the layout
+    private void SwitchLayout() {
+        gridlayoutManager.setSpanCount(currentViewMode);
+        gridAdapter.notifyItemRangeChanged(0, gridAdapter.getItemCount());
+    }
+
+    //used to switch the icons
+    private void switchIcon(MenuItem item) {
+        if (gridlayoutManager.getSpanCount() == SPAN_COUNT_TWO) {
+            item.setIcon(getResources().getDrawable(R.drawable.ic_grid_icon));
+        } else {
+            item.setIcon(getResources().getDrawable(R.drawable.ic_list_icon));
+        }
     }
 
     @NonNull
@@ -375,7 +320,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                         String p1 = o1.getPriceNew().trim();
                         String p2 = o2.getPriceNew().trim();
 
-
                         //removing unwanted KSH , KES  and , before sorting
                         p1 = p1.replace("KSh", "");
                         p1 = p1.replace("KES", "");
@@ -409,7 +353,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     //used to update the xml layouts
     private void UpdateUi(ArrayList<Products> data) {
         product=data;
-        switchView();
+        setAdapter();
     }
 
 }
