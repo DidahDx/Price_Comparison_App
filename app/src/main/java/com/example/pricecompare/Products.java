@@ -7,8 +7,7 @@ public class Products {
     String imageLogo;
     String imageProduct;
     String ProductDescription;
-
-
+    String newProductLabel;
     String PriceOld;
     String PriceNew;
     String urlLink;
@@ -20,9 +19,11 @@ public class Products {
 
 
 
-    public Products(String ProductDes,String price,String imageP,String urlLink,String imageLogo){
+    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String newProduct){
         ProductDescription=ProductDes;
-        PriceOld=price;
+        PriceOld=priceOld;
+        this.newProductLabel =newProduct;
+        this.PriceNew=PriceNew;
         imageProduct=imageP;
         this.urlLink=urlLink;
         this.imageLogo=imageLogo;
@@ -54,6 +55,9 @@ public class Products {
         return urlLink;
     }
 
+    public String getNewProductLabel() {
+        return newProductLabel;
+    }
 
     public String getPriceOld() {
         return PriceOld;
