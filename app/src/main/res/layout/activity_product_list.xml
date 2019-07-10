@@ -7,20 +7,16 @@
     tools:context=".ProductList">
 
 
-    <ViewStub
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        android:background="@drawable/grid_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_list"
-        android:inflatedId="@+id/showlayout"
-        android:layout="@layout/recylce_list"/>
+        android:layout_height="match_parent">
 
-    <ViewStub
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/stub_grid"
-        android:inflatedId="@+id/showlayout"
-        android:layout="@layout/recycle_grid"/>
 
+    </androidx.recyclerview.widget.RecyclerView>
 
 
     <ProgressBar
