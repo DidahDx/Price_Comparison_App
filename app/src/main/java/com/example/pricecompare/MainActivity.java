@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 public class MainActivity extends AppCompatActivity {
 
     static String jumiaUrl;
@@ -21,10 +23,16 @@ public class MainActivity extends AppCompatActivity {
     static String MasokoUrl;
     EditText editSearch;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Obtain the Firebase Analytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         editSearch=  findViewById(R.id.product_name);
         editSearch.setOnEditorActionListener(onEditorActionListener);

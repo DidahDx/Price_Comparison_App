@@ -1,48 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductList">
+    tools:context="com.example.pricecompare.ProductList">
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/product_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:id="@+id/container_switcher"
+            android:layout_width="match_parent"
+            android:background="#fff"
+            android:visibility="gone"
+            android:layout_height="?attr/actionBarSize">
+
+            <ImageButton
+                android:id="@+id/layout_switcher"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_marginRight="25dp"
+                android:padding="5dp"
+                android:scaleType="center"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_list_icon"
+                android:layout_marginEnd="25dp"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
-        android:padding="4dp"
+        android:padding="3dp"
         android:scrollbars="vertical"
-        android:background="@drawable/grid_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
-
 
     <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
          />
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/empty_state"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/try_again"
-        android:visibility="gone"
-        android:layout_below="@id/empty_state"
-        android:layout_margin="25dp"
-        android:layout_centerHorizontal="true"
+       android:visibility="gone"
+       android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:text="@string/try_again"/>
 
 
-</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

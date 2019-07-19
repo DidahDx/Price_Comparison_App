@@ -147,10 +147,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:textColor="#000000"
-                android:shadowColor="#000000"
-                android:shadowDx="0.0"
-                android:shadowDy="0.0"
-                android:shadowRadius="2.0"
                 android:textSize="12sp"
                 tools:text="3000"
                 />

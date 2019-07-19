@@ -1,5 +1,6 @@
 package com.example.pricecompare.AdaptersHelper;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
     public RecycleGridAdapter(ArrayList<Products> prod,GridLayoutManager gridLayoutManager){
         products=prod;
         mLayoutManager=gridLayoutManager;
+
     }
 
 
@@ -133,6 +135,13 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
+
+        if (!currentProduct.getPriceOld().trim().toLowerCase().contains("save") ||
+         !currentProduct.getPriceOld().trim().toLowerCase().contains("save ksh") ||
+                !currentProduct.getPriceOld().trim().toLowerCase().contains("saveksh"))   {
+            holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 

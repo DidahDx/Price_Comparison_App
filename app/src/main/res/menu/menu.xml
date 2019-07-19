@@ -8,10 +8,21 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="always"/>
 
-
-    <item android:id="@+id/menu_switch_layout"
-        android:title="switch Menu"
-        android:icon="@drawable/ic_list_icon"
+    <item
+        android:title="More Options"
         app:showAsAction="always"
-        />
+        android:icon="@drawable/three_dots">
+        <menu>
+
+
+            <item
+                android:title="Saved"
+                android:id="@+id/saved_items"
+                android:icon="@drawable/ic_saved_grey"
+                />
+
+        </menu>
+    </item>
+
+
 </menu>

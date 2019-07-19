@@ -8,8 +8,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class QueryUtil {
 
@@ -48,9 +56,9 @@ public class QueryUtil {
             Document docKili=null;
             Document docMasoko=null;
             try {
-                doc = Jsoup.connect(url).get();
-                docKili=Jsoup.connect(kilUrl).get();
-                docMasoko=Jsoup.connect(masokUrl).get();
+                doc = Jsoup.connect(url).sslSocketFactory(socketFactory()).get();
+                docKili=Jsoup.connect(kilUrl).sslSocketFactory(socketFactory()).get();
+                docMasoko=Jsoup.connect(masokUrl).sslSocketFactory(socketFactory()).get();
 
 
         //kilimall web scraping content
@@ -70,10 +78,30 @@ public class QueryUtil {
                 }
 
                 String productLink=row.select("a.lazyload").attr("href");
+                String NewPrice=row.select("em.sale-price").text();
                 String priceOld=row.select("div.goods-discount").text();
+
+//                if (!priceOld.isEmpty()){
+//                    priceOld=priceOld.toLowerCase().trim();
+//
+//                    priceOld=priceOld.replace("save", "");
+//                    priceOld=priceOld.replace("Save KSh", "");
+//                   priceOld= priceOld.replace("ksh", "");
+//                   priceOld= priceOld.trim();
+//                    int Old=Integer.parseInt(priceOld);
+//
+//                    int Nprice=Integer.parseInt(NewPrice.trim().replace("KSh","").trim());
+//
+//                    priceOld="Ksh"+ (Old + Nprice);
+//
+//
+//                }else{
+//                    priceOld="";
+//                }
+
                 String productdecrption=row.select("a").text();
                 productdecrption=productdecrption.replace("Add to cart","");
-                String NewPrice=row.select("em.sale-price").text();
+
                 String imglogo="https://image.kilimall.com/kenya/shop/common/05850520183675844.png";
 
                 pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
@@ -147,4 +175,25 @@ public class QueryUtil {
         return products;
     }
 
+    private static SSLSocketFactory socketFactory() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+            }
+
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+            }
+        }};
+
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException("Failed to create a SSL socket factory", e);
+        }
+    }
 }
