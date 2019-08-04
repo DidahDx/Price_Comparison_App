@@ -136,9 +136,8 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
 
-        if (!currentProduct.getPriceOld().trim().toLowerCase().contains("save") ||
-         !currentProduct.getPriceOld().trim().toLowerCase().contains("save ksh") ||
-                !currentProduct.getPriceOld().trim().toLowerCase().contains("saveksh"))   {
+        if (!currentProduct.getPriceOld().trim().toLowerCase().contains("save") &&
+         !currentProduct.getPriceOld().trim().toLowerCase().contains("save ksh"))   {
             holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
