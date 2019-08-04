@@ -33,7 +33,7 @@ public class QueryUtil {
 
 
     /**
-     * Query the online website and return an {@link List} object to represent a single earthquake.
+     * Query used to return  website data
      */
     public static List<Products> fetchWebsiteData(String requestUrl, String kiliUrl, String masokoUrl) {
 

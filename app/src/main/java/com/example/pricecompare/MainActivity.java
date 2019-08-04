@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button button=findViewById(R.id.search);
+        Button barcode=findViewById(R.id.barcode);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        barcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,Scanner.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //method used to handle enter key event for search

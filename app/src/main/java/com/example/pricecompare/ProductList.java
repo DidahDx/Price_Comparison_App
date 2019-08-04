@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -220,13 +219,13 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                     shareIntent.putExtra(Intent.EXTRA_TEXT, "I found this item in price Compare App \n"+url);
                     shareIntent.setType("text/plain");
                     startActivity(shareIntent);
-                    Toast.makeText(ProductList.this,"the share postion "+position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductList.this,"Sharing "+position,Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onSaveClick(int position) {
                     product.get(position);
-                    Toast.makeText(ProductList.this,"the postion "+position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -380,6 +379,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                         return Integer.valueOf(p1) - (Integer.valueOf(p2));
                     }
                 });
+
+
 
             }
             produ=prod;

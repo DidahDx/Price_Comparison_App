@@ -6,7 +6,7 @@
 
     <!-- Text color for the details of the earthquake in the list item -->
     <color name="textColorEarthquakeDetails">#B4BAC0</color>
-
+<color name="white">#fff</color>
     <!-- Text color for the primary location of the earthquake in the list item -->
     <color name="textColorEarthquakeLocation">#2B3D4D</color>
 </resources>

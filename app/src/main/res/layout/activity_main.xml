@@ -26,4 +26,11 @@
     android:id="@+id/search"
     android:layout_marginTop="23dp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search"
+        android:id="@+id/barcode"
+        android:text="barcode search"/>
+
 </RelativeLayout>
