@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class QueryUtil {
     private static String url;
     private static String kilUrl;
     private static String masokUrl;
+    static DecimalFormat df;
 
     public QueryUtil(){
 
@@ -47,7 +49,7 @@ public class QueryUtil {
 
     //method is used to web scrape the online websites
     private static ArrayList<Products> extractShoppingData() {
-
+        df = new DecimalFormat("#.#");
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Products> products = new ArrayList<>();
 
@@ -80,31 +82,37 @@ public class QueryUtil {
                 String productLink=row.select("a.lazyload").attr("href");
                 String NewPrice=row.select("em.sale-price").text();
                 String priceOld=row.select("div.goods-discount").text();
+                String percentageOff="";
 
-//                if (!priceOld.isEmpty()){
-//                    priceOld=priceOld.toLowerCase().trim();
-//
-//                    priceOld=priceOld.replace("save", "");
-//                    priceOld=priceOld.replace("Save KSh", "");
-//                   priceOld= priceOld.replace("ksh", "");
-//                   priceOld= priceOld.trim();
-//                    int Old=Integer.parseInt(priceOld);
-//
-//                    int Nprice=Integer.parseInt(NewPrice.trim().replace("KSh","").trim());
-//
-//                    priceOld="Ksh"+ (Old + Nprice);
-//
-//
-//                }else{
-//                    priceOld="";
-//                }
+                if (!priceOld.isEmpty()&& priceOld.indexOf('-') == -1){
+                    priceOld=priceOld.toLowerCase().trim();
 
+                    priceOld=priceOld.replace("save", "");
+                    priceOld=priceOld.replace("Save KSh", "");
+                   priceOld= priceOld.replace("ksh", "");
+                   priceOld= priceOld.replace(",", "");
+                   priceOld= priceOld.trim();
+                    int Old=Integer.parseInt(priceOld);
+
+                    int Nprice=Integer.parseInt(NewPrice.trim().replace("KSh","").replace(",","").trim());
+                    percentageOff="";
+                    priceOld="KSh "+ (Old + Nprice);
+
+                    float dOld=Float.valueOf(priceOld.replace("KSh  ",""));
+                    float dNew=Float.valueOf(NewPrice.replace("KSh","").replace(",",""));
+
+                percentageOff+=df.format(100-((dNew/dOld)*100));
+                percentageOff+="% OFF";
+
+                }
+
+                priceOld=new StringBuilder(priceOld).insert(priceOld.length()-3, ",").toString();
                 String productdecrption=row.select("a").text();
                 productdecrption=productdecrption.replace("Add to cart","");
 
                 String imglogo="https://image.kilimall.com/kenya/shop/common/05850520183675844.png";
 
-                pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+                pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
             }
 
             products.add(pro1);
@@ -133,8 +141,18 @@ public class QueryUtil {
                     NewPrice= NewPrice.substring(0,NewPrice.length()-3);
                 }
 
+                String percentageOff="";
+                if (!priceOld.isEmpty() && priceOld.indexOf('-') == -1){
 
-                pro2 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+                    float dOld=Float.valueOf(priceOld.replace("KES","").replace(",",""));
+                    float dNew=Float.valueOf(NewPrice.replace("KES","").replace(",",""));
+
+                    percentageOff+=df.format(100-((dNew/dOld)*100));
+                    percentageOff+="% OFF";
+                }
+
+
+                pro2 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
             }
             products.add(pro2);
         }
@@ -152,11 +170,17 @@ public class QueryUtil {
                     String productdecrption=row.select("span.name").text();
                     String NewPrice=row.select("span.price").text();
                     String imglogo="https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png";
+                    String percentageOff=row.select("span.sale-flag-percent").text();
                     NewPrice=NewPrice.replace(priceOld,"");
                     String NewProduct=row.select("span.new-flag").text();
 
+                    if (percentageOff.indexOf('-') != -1){
+                        percentageOff=percentageOff.replace("-","");
+                        percentageOff+=" OFF";
+                    }
 
-                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice);
+
+                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
                 }
 
                 products.add(pro);

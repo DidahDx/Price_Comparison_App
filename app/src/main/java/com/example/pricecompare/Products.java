@@ -11,6 +11,7 @@ public class Products {
     String PriceOld;
     String PriceNew;
     String urlLink;
+    String discountPercentage;
 
     public Products(String ProductDes,String price){
         ProductDescription=ProductDes;
@@ -19,7 +20,7 @@ public class Products {
 
 
 
-    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String newProduct){
+    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis,String newProduct){
         ProductDescription=ProductDes;
         PriceOld=priceOld;
         this.newProductLabel =newProduct;
@@ -27,8 +28,19 @@ public class Products {
         imageProduct=imageP;
         this.urlLink=urlLink;
         this.imageLogo=imageLogo;
+        discountPercentage=dis;
     }
 
+
+    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis){
+        discountPercentage=dis;
+        ProductDescription=ProductDes;
+        PriceOld=priceOld;
+        this.PriceNew=PriceNew;
+        imageProduct=imageP;
+        this.urlLink=urlLink;
+        this.imageLogo=imageLogo;
+    }
 
     public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew){
         ProductDescription=ProductDes;
@@ -65,6 +77,10 @@ public class Products {
 
     public String getPriceNew() {
         return PriceNew;
+    }
+
+    public String getDiscountPercentage() {
+        return discountPercentage;
     }
 
 }
