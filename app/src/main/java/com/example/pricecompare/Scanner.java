@@ -1,45 +1,74 @@
 package com.example.pricecompare;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
-import me.dm7.barcodescanner.zbar.Result;
-import me.dm7.barcodescanner.zbar.ZBarScannerView;
+import com.google.zxing.Result;
 
-public class Scanner extends AppCompatActivity implements ZBarScannerView.ResultHandler{
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-    private ZBarScannerView scannerView;
+public class Scanner extends AppCompatActivity implements ZXingScannerView.ResultHandler, LoaderManager.LoaderCallbacks<String>{
+
+    private static final int REQUEST_CAMERA=100;
+    private ZXingScannerView scannerView;
     static String jumiaUrl;
     static String kilimallUrl;
     static String MasokoUrl;
     String scanResult;
+    String barcodeUrl="https://barcode-list.com/barcode/EN/Search.htm?barcode=";
+    String googleUrl="https://www.google.com/search?q=";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        scannerView=new ZBarScannerView(this);
-        scannerView.setAutoFocus(true);
+        scannerView=new ZXingScannerView(this);
         setContentView(scannerView);
+
+        //checking camera permission
+        if (ContextCompat.checkSelfPermission(Scanner.this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(Scanner.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
+        }
+
+
+
     }
 
-
+    //requesting camera permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==REQUEST_CAMERA){
+            if (grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this,"Camera permission granted",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this,"Camera permission denied",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         scannerView.setResultHandler(this);
-                scannerView.startCamera();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        scannerView.stopCamera();
+        scannerView.startCamera();
     }
 
     @Override
@@ -49,44 +78,63 @@ public class Scanner extends AppCompatActivity implements ZBarScannerView.Result
     }
 
 
+
+
     @Override
     public void handleResult(Result result) {
-//     scanResult=result.getText();
-     scanResult=result.getContents();
+        scanResult=result.getText();
 
-    AlertDialog.Builder builder=new AlertDialog.Builder(this);
-    builder.setTitle("Scan Result");
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Scan Result");
 
-    builder.setNegativeButton("Scan Again", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            scannerView.resumeCameraPreview(Scanner.this);
-        }
-    });
+        builder.setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                scannerView.resumeCameraPreview(Scanner.this);
+            }
+        });
 
-    builder.setNeutralButton("Search", new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-
-//    Intent intent=new Intent(Intent.ACTION_VIEW , Uri.parse(scanResult));
-//    startActivity(intent);
+        builder.setNeutralButton("Search", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
 
-            buildJumiaUrl();
-            buildKilimallUrl();
-            buildMasokoUrl();
-            Intent i =new Intent(Scanner.this,ProductList.class);
-            i.putExtra("JumiaUrl",jumiaUrl);
-            i.putExtra("kilimallUrl",kilimallUrl);
-            i.putExtra("MasokoUrl",MasokoUrl);
-            startActivity(i);
-        }
-    });
+                if (scanResult.matches("[0-9]")){
+
+                    ProgressBar progressBar=new ProgressBar(Scanner.this);
+                    progressBar.setIndeterminate(true);
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    BarcodeUrl();
+                    finish();
+                    buildJumiaUrl();
+                    buildKilimallUrl();
+                    buildMasokoUrl();
+                    progressBar.setVisibility(View.GONE);
+                    Intent i =new Intent(Scanner.this,ProductList.class);
+                    i.putExtra("JumiaUrl",jumiaUrl);
+                    i.putExtra("kilimallUrl",kilimallUrl);
+                    i.putExtra("MasokoUrl",MasokoUrl);
+                    startActivity(i);
+                }else{
+                    finish();
+                    buildJumiaUrl();
+                    buildKilimallUrl();
+                    buildMasokoUrl();
+
+                    Intent i =new Intent(Scanner.this,ProductList.class);
+                    i.putExtra("JumiaUrl",jumiaUrl);
+                    i.putExtra("kilimallUrl",kilimallUrl);
+                    i.putExtra("MasokoUrl",MasokoUrl);
+                    startActivity(i);
+                }
+            }
+        });
 
 
-    builder.setMessage(scanResult);
-    AlertDialog alert=builder.create();
-    alert.show();
+        builder.setMessage(scanResult);
+        AlertDialog alert=builder.create();
+        alert.show();
     }
 
     //used to build the JumiaUrl link
@@ -114,5 +162,26 @@ public class Scanner extends AppCompatActivity implements ZBarScannerView.Result
         return s;
     }
 
+    //build barcode url
+    public void BarcodeUrl(){
+        String s=scanResult;
+        googleUrl+=s;
+        barcodeUrl+=s;
+    }
 
+    @NonNull
+    @Override
+    public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<String> loader, String data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<String> loader) {
+
+    }
 }
