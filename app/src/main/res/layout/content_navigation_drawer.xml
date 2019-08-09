@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/app_bar_navigation_drawer">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="54dp"
+        android:id="@+id/product_name"
+        android:layout_above="@id/search"
+        android:background="@drawable/search_layout"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="25dp"
+        android:drawableStart="@drawable/ic_search"
+        android:paddingRight="20dp"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:drawableLeft="@drawable/ic_search" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_search"
+        android:layout_centerInParent="true"
+        android:text="Search"
+        android:id="@+id/search"
+        android:layout_marginTop="23dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search"
+        android:id="@+id/barcode"
+        android:text="barcode search"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/custom_search"
+        android:layout_below="@id/barcode"
+        android:text="custom search"/>
+
+</RelativeLayout>

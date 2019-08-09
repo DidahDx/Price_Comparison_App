@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -12,16 +13,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     static String jumiaUrl;
     static String kilimallUrl;
     static String MasokoUrl;
-    EditText editSearch;
+   static EditText editSearch;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         // Obtain the Firebase Analytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -45,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button button=findViewById(R.id.search);
         Button barcode=findViewById(R.id.barcode);
+        Button customSearch=findViewById(R.id.custom_search);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("JumiaUrl",jumiaUrl);
                 intent.putExtra("kilimallUrl",kilimallUrl);
                 intent.putExtra("MasokoUrl",MasokoUrl);
+                intent.putExtra("ProductName",editSearch.getText().toString());
                 startActivity(intent);
             }else {
                     Toast.makeText(MainActivity.this,"the width of the screen is"+size.x,Toast.LENGTH_LONG).show();
@@ -70,10 +82,30 @@ public class MainActivity extends AppCompatActivity {
         barcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,Scanner.class);
+
+                    Intent intent = new Intent(MainActivity.this, Scanner.class);
+                    startActivity(intent);
+
+            }
+        });
+
+        customSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,Search.class);
                 startActivity(intent);
             }
         });
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     //method used to handle enter key event for search
@@ -92,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra("JumiaUrl",jumiaUrl);
                     i.putExtra("kilimallUrl",kilimallUrl);
                     i.putExtra("MasokoUrl",MasokoUrl);
+                        i.putExtra("ProductName",editSearch.getText().toString());
                     startActivity(i);
             }else {
                 Toast.makeText(MainActivity.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
@@ -125,5 +158,40 @@ public class MainActivity extends AppCompatActivity {
         String s=editSearch.getText().toString().trim();
         s=s.replace(" ","+");
         return s;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+
+        switch (item.getItemId()){
+
+            case R.id.nav_login:
+                break;
+
+            case R.id.nav_settings:
+                break;
+
+            case R.id.nav_share:
+                break;
+
+            case R.id.nav_saved:
+                break;
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
