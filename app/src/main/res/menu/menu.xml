@@ -14,11 +14,20 @@
         android:icon="@drawable/three_dots">
         <menu>
 
-
+            <item
+                android:title="Login"
+                android:id="@+id/login_items"
+                android:icon="@drawable/ic_saved_grey"
+                />
             <item
                 android:title="Saved"
                 android:id="@+id/saved_items"
                 android:icon="@drawable/ic_saved_grey"
+                />
+            <item
+                android:title="Settings"
+                android:id="@+id/settings_items"
+                android:icon="@drawable/ic_settings"
                 />
 
         </menu>

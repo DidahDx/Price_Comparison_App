@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +22,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.pricecompare.AdaptersHelper.RecycleGridAdapter;
 import com.example.pricecompare.WebScraper.QueryUtil;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,6 +67,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     private FirebaseAnalytics mFirebaseAnalytics;
     private final String KEY_RECYCLER_STATE = "recycler_state";
     private static Bundle mBundleRecyclerViewState;
+    Parcelable listState;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,10 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        setSupportActionBar((Toolbar)findViewById(R.id.product_toolbar));
+        toolbar =findViewById(R.id.product_toolbar);
+
+        setSupportActionBar(toolbar);
+
 
         progressBar1=findViewById(R.id.progress_circular);
         emptyState=findViewById(R.id.empty_state);
@@ -108,7 +117,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 SharedPreferences sharedPreferences=getSharedPreferences("ViewMode",MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putInt("currentViewMode",currentViewMode);
-                editor.commit();
+                editor.apply();
             }
         });
 
@@ -117,6 +126,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         JumiaUrl =bundle.getString("JumiaUrl");
         kilimallUrl=bundle.getString("kilimallUrl");
         MasokoUrl=bundle.getString("MasokoUrl");
+        toolbar.setTitle(bundle.getString("ProductName"));
 
 //        gridRecyclerView=findViewById(R.id.grid_layout);
         gridRecyclerView=findViewById(R.id.rv);
@@ -144,9 +154,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             }
         });
 
-//        //check the default view saved in the shared preference
-//        SharedPreferences sharedPreference=getSharedPreferences("ViewMode",MODE_PRIVATE);
-//        currentViewMode=sharedPreference.getInt("currentViewMode",SPAN_COUNT_ONE);
+
 
         //used to display the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -177,18 +185,37 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("alreadySearch",alreadySearched);
+        // save RecyclerView state
+        mBundleRecyclerViewState = new Bundle();
+         listState = gridRecyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(KEY_RECYCLER_STATE, listState);
 
     }
 
-    //restoring instaces after rotation
+    //restoring instances after rotation
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         alreadySearched=savedInstanceState.getInt("alreadySearch");
-
-
+        // restore RecyclerView state
+        if (savedInstanceState != null) {
+            listState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        listState=null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+      if (listState!=null) {
+          gridRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+      }
+    }
 
 
     //used to set the Adapter
@@ -231,7 +258,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
     }
 
-    //setting the menu with the switch mode option
+    //setting the menu fr toolbar option
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
@@ -245,11 +272,15 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
                 //used to close this activity
             case R.id.search:
+                mBundleRecyclerViewState=null;
+                MainActivity.editSearch.setFocusable(true);
                 finish();
                 break;
 
                 //back button used to close this activity
             case android.R.id.home:
+                mBundleRecyclerViewState=null;
+                MainActivity.editSearch.setFocusable(true);
                 finish();
                 break;
         }
@@ -279,8 +310,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         return new ProductAsyncLoader(ProductList.this);
     }
 
-
-
     //called when the background thread has finished loading
     @Override
     public void onLoadFinished(@NonNull Loader<ArrayList<Products>> loader, ArrayList<Products> data) {
@@ -297,17 +326,13 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         }
 
         //when there is an error loading data
-
         if ( data.size() <= 0) {
             emptyState.setText(getString(R.string.load_error));
             emptyState.setVisibility(View.VISIBLE);
             tryAgain.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.GONE);
         }
-
     }
-
-
 
     @Override
     public void onLoaderReset(@NonNull Loader<ArrayList<Products>> loader) {
@@ -338,7 +363,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
             // We’ll save the data for later retrieval
             produ = data;
-
         }
 
 
@@ -379,8 +403,6 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                         return Integer.valueOf(p1) - (Integer.valueOf(p2));
                     }
                 });
-
-
 
             }
             produ=prod;

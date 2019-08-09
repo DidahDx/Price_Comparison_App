@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.Result;
@@ -39,6 +40,7 @@ public class Search extends AppCompatActivity {
      searchView=findViewById(R.id.searchView);
      searchView.closeSearch();
      searchView.setSuggestions(listSource);
+     searchView.setVoiceSearch(true);
 
      searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
          @Override
@@ -47,7 +49,9 @@ public class Search extends AppCompatActivity {
              searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
                  @Override
                  public boolean onQueryTextSubmit(String query) {
-                     return false;
+
+                     Toast.makeText(getApplicationContext(),"Submitted query",Toast.LENGTH_SHORT).show();
+                     return true;
                  }
 
                  @Override
