@@ -52,6 +52,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         public ImageView imgLogo;
         public ImageView share;
         public ImageView save;
+        TextView discount;
 
         public GridViewHolder(@NonNull View itemView, final RecycleGridAdapter.OnItemClickListener listener, int viewType) {
             super(itemView);
@@ -64,6 +65,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
             imgLogo=itemView.findViewById(R.id.website_logo);
             share=itemView.findViewById(R.id.share);
             save=itemView.findViewById(R.id.save);
+            discount=itemView.findViewById(R.id.discount);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +138,15 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
 
-        if (!currentProduct.getPriceOld().trim().toLowerCase().contains("save") &&
-         !currentProduct.getPriceOld().trim().toLowerCase().contains("save ksh"))   {
-            holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+
+        holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        if (currentProduct.getDiscountPercentage() ==null || currentProduct.getDiscountPercentage().isEmpty()){
+            holder.discount.setVisibility(View.GONE);
+        }else{
+            holder.discount.setVisibility(View.VISIBLE);
         }
+        holder.discount.setText(currentProduct.getDiscountPercentage());
+
 
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
