@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+     android:clickable="true"
     app:cardCornerRadius="10dp"
     android:paddingTop="14dp"
     android:paddingBottom="12dp"
@@ -15,7 +15,8 @@
     android:paddingLeft="16dp"
     android:layout_margin="1dp"
     android:paddingEnd="16dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:focusable="true">
 
 
 <LinearLayout
@@ -111,8 +112,7 @@
             android:maxLines="4"
             android:textColor="@color/textColorEarthquakeLocation"
             android:textSize="16sp"
-            android:text="Long placeholder for the  descrption of the product should not be too long"
-            tools:text="Long placeholder for the  descrption of the product should not be too long " />
+           tools:text="Long placeholder for the  descrption of the product should not be too long " />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -129,7 +129,6 @@
                     android:layout_gravity="end"
                     android:textColor="#000"
                     android:textSize="12sp"
-                    android:text="$435678"
                     tools:text="$12000" />
 
                 <TextView
@@ -139,23 +138,26 @@
                     android:layout_gravity="end"
                     android:textColor="#000"
                     android:textSize="12sp"
-                    android:text="3000"
                     tools:text="3000"
                     />
 
             </LinearLayout>
             <TextView
-                android:id="@+id/magnitude"
+                android:id="@+id/discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-
+                android:background="@drawable/discount_box"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/white"
+                android:padding="3dp"
+                android:text="-30%"
+                android:textStyle="bold|italic"
+                android:textSize="14sp"
                 android:layout_toRightOf="@id/prices"
-                tools:text="8.9" />
+                android:layout_marginStart="20dp" />
 
         </RelativeLayout>
 
