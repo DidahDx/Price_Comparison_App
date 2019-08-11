@@ -29,11 +29,7 @@ public class QueryUtil {
     private static String masokUrl;
     static DecimalFormat df;
 
-    public QueryUtil(){
-
-    }
-
-
+    public QueryUtil(){}
     /**
      * Query used to return  website data
      */
@@ -84,6 +80,7 @@ public class QueryUtil {
                 String priceOld=row.select("div.goods-discount").text();
                 String percentageOff="";
 
+                try{
                 if (!priceOld.isEmpty()&& priceOld.indexOf('-') == -1){
                     priceOld=priceOld.toLowerCase().trim();
 
@@ -98,15 +95,18 @@ public class QueryUtil {
                     percentageOff="";
                     priceOld="KSh "+ (Old + Nprice);
 
-                    float dOld=Float.valueOf(priceOld.replace("KSh  ",""));
+                    float dOld=Float.valueOf(priceOld.replace("KSh","").replace(",",""));
                     float dNew=Float.valueOf(NewPrice.replace("KSh","").replace(",",""));
 
                 percentageOff+=df.format(100-((dNew/dOld)*100));
                 percentageOff+="% OFF";
 
+                }}
+                catch (NumberFormatException e){
+                    Log.d(LOG_TAG,"Error calculating Kilimall percentage "+e.getStackTrace(),e);
                 }
 
-                priceOld=new StringBuilder(priceOld).insert(priceOld.length()-3, ",").toString();
+
                 String productdecrption=row.select("a").text();
                 productdecrption=productdecrption.replace("Add to cart","");
 
@@ -144,11 +144,15 @@ public class QueryUtil {
                 String percentageOff="";
                 if (!priceOld.isEmpty() && priceOld.indexOf('-') == -1){
 
-                    float dOld=Float.valueOf(priceOld.replace("KES","").replace(",",""));
-                    float dNew=Float.valueOf(NewPrice.replace("KES","").replace(",",""));
+                    try {
+                        float dOld=Float.valueOf(priceOld.replace("KES","").replace(",",""));
+                        float dNew=Float.valueOf(NewPrice.replace("KES","").replace(",",""));
 
-                    percentageOff+=df.format(100-((dNew/dOld)*100));
-                    percentageOff+="% OFF";
+                        percentageOff+=df.format(100-((dNew/dOld)*100));
+                        percentageOff+="% OFF";
+                    }catch (NumberFormatException e){
+                        Log.d(LOG_TAG,"Error in Caculation"+e.getStackTrace(),e);
+                    }
                 }
 
 
@@ -191,7 +195,7 @@ public class QueryUtil {
                 // If an error is thrown when executing any of the above statements in the "try" block,
                 // catch the exception here, so the app doesn't crash. Print a log message
                 // with the message from the exception.
-                Log.e("QueryUtil", "Problem parsing  results", e);
+                Log.e(LOG_TAG, "Problem parsing  results", e);
 
             }
 
