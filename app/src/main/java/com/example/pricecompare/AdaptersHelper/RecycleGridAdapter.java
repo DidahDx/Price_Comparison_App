@@ -140,10 +140,16 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
 
         holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-        if (currentProduct.getDiscountPercentage() ==null || currentProduct.getDiscountPercentage().isEmpty()){
+        if (currentProduct.getDiscountPercentage() ==null){
             holder.discount.setVisibility(View.GONE);
         }else{
-            holder.discount.setVisibility(View.VISIBLE);
+            if (!currentProduct.getProductDescription().matches("")){
+                if (currentProduct.getProductDescription().length()>2){
+                    holder.discount.setVisibility(View.VISIBLE);
+                }else {
+                    holder.discount.setVisibility(View.GONE);
+                }
+            }
         }
         holder.discount.setText(currentProduct.getDiscountPercentage());
 
