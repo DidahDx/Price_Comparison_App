@@ -24,37 +24,40 @@ public class ScannerQuery {
 
     //this method
     public static String getBarcodeName(String google, String databaseWeb){
-        String productName="";
+        String productName="Product Name Not Found";
         Document Google=null;
         Document DatabaseWeb=null;
+        String googleName=" ";
 
         try {
             Google = Jsoup.connect(google).sslSocketFactory(socketFactory()).get();
             DatabaseWeb = Jsoup.connect(databaseWeb).sslSocketFactory(socketFactory()).get();
 
 
-            String webName = null;
-            String googleName=Google.select("h3.LC20lb").text();
+             googleName=Google.select("h3.LC20lb").text();
 
             if (googleName.indexOf('-') != -1) {
                 googleName = googleName.replace(googleName.substring(googleName.indexOf('-') + 1), "");
                 googleName = googleName.replace("-", "");
             }
 
-            for (Element row:DatabaseWeb.select("tr.even")){
+            String webName=DatabaseWeb.select("h1.pageTitle").text();
 
-                for (int i=0;i<=2;i++){
-                    webName = row.select("td").text();
-                }
-
-                break;
+            if (webName.indexOf('-') != -1) {
+                webName = webName.replace(webName.substring(webName.indexOf('-') + 1), "");
+                webName = webName.replace("-", "");
+            }else if ( webName.indexOf(':')!= -1){
+                    webName="";
             }
 
+            if (googleName.matches("[0-9]+")){
+                googleName="";
+            }
 
-            if (webName!=null && !webName.isEmpty()){
+            if (!webName.trim().isEmpty()){
                 productName=webName;
 
-            }else if (googleName!=null && !googleName.isEmpty() && webName==null && productName.isEmpty()){
+            }else if (!googleName.isEmpty() && productName.isEmpty()){
                 productName=googleName;
 
             }else{
