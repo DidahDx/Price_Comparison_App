@@ -92,21 +92,22 @@
 
     <ImageView
         android:id="@+id/save"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:padding="13dp"
+        android:padding="3dp"
         android:layout_alignParentRight="true"
-        android:background="@drawable/save"
+        android:src="@drawable/save"
 
         />
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:padding="13dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:id="@+id/share"
-       android:layout_alignParentLeft="true"
-        android:background="@drawable/share"/>
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/share"
+        android:padding="3dp" />
 
 <LinearLayout
     android:id="@+id/linear_bottom"
