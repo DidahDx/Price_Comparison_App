@@ -66,6 +66,7 @@ public class ScannerQuery {
 
 
         } catch (IOException e) {
+            productName="\t\tSomething went wrong, \n Check your Internet Connection \n Try again";
             e.printStackTrace();
         }
 
