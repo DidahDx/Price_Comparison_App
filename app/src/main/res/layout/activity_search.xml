@@ -22,17 +22,61 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:popupTheme="@style/CardView.Dark"/>
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:titleTextColor="@color/black"
+            app:popupTheme="@style/CardView.Dark">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                >
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:searchBackground="@color/white"
-            app:searchSuggestionBackground="@color/white"
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/search_layout"
+                    android:backgroundTint="@color/white"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="7dp"
+                    android:paddingTop="7dp"
+                    android:id="@+id/search_product"
+                    android:textColor="@color/black"
+                    android:paddingLeft="25dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:paddingRight="85dp"
+                    android:hint="@string/search_hint"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="85dp"
+                    android:imeOptions="actionSearch"    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/voice_search"
+                    android:background="@drawable/ic_mic"
+                    android:clickable="true"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="10dp"
+                    android:layout_marginRight="60dp"
+                    android:focusable="true" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/barcode_search"
+                    android:layout_centerVertical="true"
+                    android:padding="17dp"
+                    android:layout_marginRight="14dp"
+                    android:background="@drawable/ic_barcode"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="14dp" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
 
 
-            />
 
 
 

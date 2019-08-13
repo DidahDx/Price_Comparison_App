@@ -152,7 +152,7 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/white"
                 android:padding="3dp"
-                android:text="-30%"
+                tools:text="-30%"
                 android:textStyle="bold|italic"
                 android:textSize="14sp"
                 android:layout_toRightOf="@id/prices"

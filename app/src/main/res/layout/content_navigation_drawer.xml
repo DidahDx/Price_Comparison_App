@@ -9,45 +9,28 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_navigation_drawer">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="20dp"
         android:layout_height="54dp"
         android:id="@+id/product_name"
-        android:layout_above="@id/search"
+       android:layout_centerInParent="true"
         android:background="@drawable/search_layout"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:paddingTop="12dp"
+        android:textColor="@color/black"
         android:paddingLeft="25dp"
+        android:textSize="22sp"
+        android:textStyle="bold|italic"
         android:drawableStart="@drawable/ic_search"
         android:paddingRight="20dp"
         android:hint="@string/search_hint"
-        android:inputType="text"
-        android:imeOptions="actionSearch"
-        android:drawableLeft="@drawable/ic_search" />
+        android:drawableLeft="@drawable/ic_search"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="25dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_search"
-        android:layout_centerInParent="true"
-        android:text="Search"
-        android:id="@+id/search"
-        android:layout_marginTop="23dp"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/search"
-        android:id="@+id/barcode"
-        android:text="barcode search"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/custom_search"
-        android:layout_below="@id/barcode"
-        android:text="custom search"/>
 
 </RelativeLayout>

@@ -8,6 +8,7 @@
         <item
             android:id="@+id/nav_login"
             android:title="@string/menu_login"
+            android:icon="@drawable/ic_login"
             />
         <item
             android:id="@+id/nav_saved"

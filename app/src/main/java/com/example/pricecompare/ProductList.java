@@ -10,10 +10,12 @@ import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private final String KEY_RECYCLER_STATE = "recycler_state";
+    private final int PRODUCT_LOADER_ID=100;
     private static Bundle mBundleRecyclerViewState;
     Parcelable listState;
     Toolbar toolbar;
@@ -94,6 +97,14 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         switchLayout=findViewById(R.id.layout_switcher);
         relativeLayout=findViewById(R.id.container_switcher);
         relativeLayout.setVisibility(View.GONE);
+        Spinner mySpinner=findViewById(R.id.sort_product);
+
+        //setting spinner input
+        ArrayAdapter<String> sortAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.sort));
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mySpinner.setAdapter(sortAdapter);
 
 
         //used to switch the layout
@@ -128,7 +139,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         MasokoUrl=bundle.getString("MasokoUrl");
         toolbar.setTitle(bundle.getString("ProductName"));
 
-//        gridRecyclerView=findViewById(R.id.grid_layout);
+
         gridRecyclerView=findViewById(R.id.rv);
         gridlayoutManager=new GridLayoutManager(this,currentViewMode);
 
@@ -141,7 +152,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
                 if (networkInfo !=null && networkInfo.isConnected()) {
-                    getSupportLoaderManager().restartLoader(100, null,  ProductList.this);
+                    getSupportLoaderManager().restartLoader(PRODUCT_LOADER_ID, null,  ProductList.this);
                     emptyState.setVisibility(View.GONE);
                     progressBar1.setVisibility(View.VISIBLE);
                     tryAgain.setVisibility(View.GONE);
@@ -165,7 +176,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         if (networkInfo !=null && networkInfo.isConnected()){
 
             if(alreadySearched==0) {
-                getSupportLoaderManager().initLoader(100, null, this);
+                getSupportLoaderManager().initLoader(PRODUCT_LOADER_ID, null, this);
                 alreadySearched=1;
             }
         }else{

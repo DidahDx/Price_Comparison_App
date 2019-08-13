@@ -10,4 +10,6 @@
 <color name="light_blue">#00bfff</color>
     <!-- Text color for the primary location of the earthquake in the list item -->
     <color name="textColorEarthquakeLocation">#2B3D4D</color>
+    <color name="red">#FF0D1D</color>
+    <color name="black">#000000</color>
 </resources>

@@ -131,7 +131,7 @@ public class LoginPage extends AppCompatActivity {
         if (currentUser!=null){
             finish();
         }
-//        updateUI(currentUser);
+//
     }
 
     @Override

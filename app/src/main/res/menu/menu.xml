@@ -17,7 +17,7 @@
             <item
                 android:title="Login"
                 android:id="@+id/login_items"
-                android:icon="@drawable/ic_saved_grey"
+                android:icon="@drawable/ic_login"
                 />
             <item
                 android:title="Saved"

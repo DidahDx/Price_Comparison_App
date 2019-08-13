@@ -13,6 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:id="@+id/login_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Login"
         app:titleTextColor="@color/white"
         />
