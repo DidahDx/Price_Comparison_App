@@ -78,7 +78,7 @@ public class QueryUtil {
                 String productLink=row.select("a.lazyload").attr("href");
                 String NewPrice=row.select("em.sale-price").text();
                 String priceOld=row.select("div.goods-discount").text();
-                String percentageOff="";
+                String percentageOff=null;
 
                 try{
                 if (!priceOld.isEmpty()&& priceOld.indexOf('-') == -1){
@@ -141,7 +141,7 @@ public class QueryUtil {
                     NewPrice= NewPrice.substring(0,NewPrice.length()-3);
                 }
 
-                String percentageOff="";
+                String percentageOff=null;
                 if (!priceOld.isEmpty() && priceOld.indexOf('-') == -1){
 
                     try {
@@ -181,6 +181,8 @@ public class QueryUtil {
                     if (percentageOff.indexOf('-') != -1){
                         percentageOff=percentageOff.replace("-","");
                         percentageOff+=" OFF";
+                    }else {
+                        percentageOff=null;
                     }
 
 

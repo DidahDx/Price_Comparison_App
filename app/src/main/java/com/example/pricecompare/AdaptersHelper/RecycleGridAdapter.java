@@ -143,7 +143,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         if (currentProduct.getDiscountPercentage() ==null){
             holder.discount.setVisibility(View.GONE);
         }else{
-            if (!currentProduct.getProductDescription().matches("")){
+            if (!currentProduct.getProductDescription().matches("") && currentProduct.getProductDescription().indexOf("%")!=-1){
                 if (currentProduct.getProductDescription().length()>2){
                     holder.discount.setVisibility(View.VISIBLE);
                 }else {
