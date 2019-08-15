@@ -1,6 +1,7 @@
 package com.example.pricecompare;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
     String scanName;
     static String barcodeUrl;
     static String  googleUrl;
-    ProgressBar progressBar;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -95,21 +96,26 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
         scanResult=result.getText();
         scanName="";
 
+        /*TODO: add a progress dialog*/
         BarcodeUrl();
 
         //checking network before reloading
         ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
-        progressBar =new ProgressBar(Scanner.this);
-        progressBar.setIndeterminate(true);
+        progressDialog =new ProgressDialog(Scanner.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setTitle("Processing...");
+        progressDialog.setMessage("Please wait.");
+        progressDialog.setCancelable(false);
 
         if (scanResult.matches("[0-9]+")) {
             if (networkInfo != null && networkInfo.isConnected()) {
-                progressBar.setVisibility(View.VISIBLE);
+                progressDialog.show();
                 getSupportLoaderManager().restartLoader(20, null, this);
             } else {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(Scanner.this,"Check network and try again",Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                Toast.makeText(Scanner.this,"Check network and try again",Toast.LENGTH_LONG).show();
+                scannerView.resumeCameraPreview(Scanner.this);
             }
         }else{
             AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -201,7 +207,9 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
            if (data!=null) {
                scanName = data;
-               progressBar.setVisibility(View.GONE);
+               if (progressDialog!=null) {
+                   progressDialog.dismiss();
+               }
                AlertDialog.Builder builder=new AlertDialog.Builder(this);
                builder.setTitle("Scan Result");
 
@@ -234,7 +242,7 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                });
 
 
-               builder.setMessage(scanName+"\n"+scanResult);
+               builder.setMessage("Product Name:"+scanName+"\n\n Barcode:"+scanResult);
                AlertDialog alert=builder.create();
                alert.show();
            }else {

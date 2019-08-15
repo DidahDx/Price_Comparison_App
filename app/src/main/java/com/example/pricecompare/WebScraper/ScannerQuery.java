@@ -24,7 +24,7 @@ public class ScannerQuery {
 
     //this method
     public static String getBarcodeName(String google, String databaseWeb){
-        String productName="Product Name Not Found";
+        String productName=" Not Found";
         Document Google=null;
         Document DatabaseWeb=null;
         String googleName=" ";
@@ -61,12 +61,12 @@ public class ScannerQuery {
                 productName=googleName;
 
             }else{
-                productName="Product Name Not Found";
+                productName=" Not Found";
             }
 
 
         } catch (IOException e) {
-            productName="\t\tSomething went wrong, \n Check your Internet Connection \n Try again";
+            productName="Something went wrong, Check your Internet Connection and Try again";
             e.printStackTrace();
         }
 

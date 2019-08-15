@@ -41,4 +41,5 @@
     <string name="login_error_message">Wrong email or password try again</string>
     <string name="hint_confirm_password">Confirm your password</string>
     <string name="password_dont_match">Passwords do not match</string>
+    <string name="logOut">LogOut</string>
 </resources>

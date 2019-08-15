@@ -35,6 +35,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pricecompare.AdaptersHelper.RecycleGridAdapter;
 import com.example.pricecompare.WebScraper.QueryUtil;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +76,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     private static Bundle mBundleRecyclerViewState;
     Parcelable listState;
     Toolbar toolbar;
+    DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        //firebase database reference
+
+        databaseReference= FirebaseDatabase.getInstance().getReference("SavedProducts");
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         toolbar =findViewById(R.id.product_toolbar);
@@ -98,6 +108,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         relativeLayout=findViewById(R.id.container_switcher);
         relativeLayout.setVisibility(View.GONE);
         Spinner mySpinner=findViewById(R.id.sort_product);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         //setting spinner input
         ArrayAdapter<String> sortAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
@@ -138,6 +151,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         kilimallUrl=bundle.getString("kilimallUrl");
         MasokoUrl=bundle.getString("MasokoUrl");
         toolbar.setTitle(bundle.getString("ProductName"));
+
 
 
         gridRecyclerView=findViewById(R.id.rv);
@@ -198,6 +212,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         outState.putInt("alreadySearch",alreadySearched);
         // save RecyclerView state
         mBundleRecyclerViewState = new Bundle();
+
          listState = gridRecyclerView.getLayoutManager().onSaveInstanceState();
         outState.putParcelable(KEY_RECYCLER_STATE, listState);
 
@@ -262,8 +277,23 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
                 @Override
                 public void onSaveClick(int position) {
-                    product.get(position);
-                    Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
+                    Products pro=product.get(position);
+                    firebaseUser = mAuth.getCurrentUser();
+                    if (firebaseUser!=null){
+
+
+                        String userid =firebaseUser.getUid();
+                        String id=databaseReference.push().getKey();
+
+                        Products products=new Products(pro.getProductDescription(),pro.getPriceOld(),pro.getImageProduct()
+                                ,pro.getUrlLink(),pro.getImageLogo(),pro.getPriceNew(),pro.getDiscountPercentage());
+
+                        databaseReference.child(userid).child(id).setValue(products);
+                        Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
+                    }else {
+                        startActivity(new Intent(ProductList.this,LoginPage.class));
+                    }
+
                 }
             });
 
@@ -281,19 +311,17 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
 
-                //used to close this activity
-            case R.id.search:
-                mBundleRecyclerViewState=null;
-                MainActivity.editSearch.setFocusable(true);
-                finish();
-                break;
-
                 //back button used to close this activity
             case android.R.id.home:
                 mBundleRecyclerViewState=null;
                 MainActivity.editSearch.setFocusable(true);
                 finish();
                 break;
+
+            case R.id.saved_items:
+                startActivity(new Intent(ProductList.this,SavedProducts.class));
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

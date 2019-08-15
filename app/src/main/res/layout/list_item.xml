@@ -81,23 +81,7 @@
                     android:id="@+id/website_logo"
                     android:layout_width="80dp"
                     android:layout_height="50dp"
-                    android:layout_toLeftOf="@id/website_name"
-
                     />
-
-                <!--  website name  -->
-                <TextView
-                    android:id="@+id/website_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:layout_alignParentRight="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:maxLines="1"
-                    android:textAllCaps="true"
-                    android:textColor="@color/textColorEarthquakeDetails"
-                    android:textSize="12sp"
-                    tools:text="website Name" />
 
 
         </LinearLayout>
@@ -149,14 +133,13 @@
                 android:background="@drawable/discount_box"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:layout_marginLeft="20dp"
                 android:textColor="@color/white"
-                android:padding="3dp"
                 tools:text="-30%"
+                android:maxLines="1"
                 android:textStyle="bold|italic"
-                android:textSize="14sp"
-                android:layout_toRightOf="@id/prices"
-                android:layout_marginStart="20dp" />
+                android:singleLine="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 
@@ -169,7 +152,9 @@
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginRight="0dp"
+        android:paddingLeft="8dp">
 
         <ImageView
             android:id="@+id/save"
@@ -179,16 +164,15 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/save"
             android:layout_alignParentEnd="true" />
-
-    <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-    android:orientation="vertical">
-
-
-</LinearLayout>
+        <ImageView
+            android:id="@+id/saved"
+            android:layout_width="50dp"
+            android:padding="4dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_saved"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true" />
 
 
         <ImageView

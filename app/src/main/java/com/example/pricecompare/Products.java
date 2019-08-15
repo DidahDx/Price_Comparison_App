@@ -3,53 +3,30 @@ package com.example.pricecompare;
 public class Products {
 
 
+    private String imageLogo;
+    private String imageProduct;
+    private String productDescription;
+    private  String newProductLabel;
+    private String priceOld;
+    private String priceNew;
+    private String urlLink;
+    private String discountPercentage;
 
-    String imageLogo;
-    String imageProduct;
-    String ProductDescription;
-    String newProductLabel;
-    String PriceOld;
-    String PriceNew;
-    String urlLink;
-    String discountPercentage;
-
-    public Products(String ProductDes,String price){
-        ProductDescription=ProductDes;
-        PriceOld=price;
+    private Products(){
     }
 
-
-
-    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis,String newProduct){
-        ProductDescription=ProductDes;
-        PriceOld=priceOld;
-        this.newProductLabel =newProduct;
-        this.PriceNew=PriceNew;
-        imageProduct=imageP;
-        this.urlLink=urlLink;
-        this.imageLogo=imageLogo;
-        discountPercentage=dis;
-    }
 
 
     public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis){
         discountPercentage=dis;
-        ProductDescription=ProductDes;
-        PriceOld=priceOld;
-        this.PriceNew=PriceNew;
+        productDescription =ProductDes;
+        this.priceOld =priceOld;
+        this.priceNew =PriceNew;
         imageProduct=imageP;
         this.urlLink=urlLink;
         this.imageLogo=imageLogo;
     }
 
-    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew){
-        ProductDescription=ProductDes;
-        PriceOld=priceOld;
-        this.PriceNew=PriceNew;
-        imageProduct=imageP;
-        this.urlLink=urlLink;
-        this.imageLogo=imageLogo;
-    }
 
     public String getImageLogo() {
         return imageLogo;
@@ -60,7 +37,7 @@ public class Products {
     }
 
     public String getProductDescription() {
-        return ProductDescription;
+        return productDescription;
     }
 
     public String getUrlLink() {
@@ -72,11 +49,11 @@ public class Products {
     }
 
     public String getPriceOld() {
-        return PriceOld;
+        return priceOld;
     }
 
     public String getPriceNew() {
-        return PriceNew;
+        return priceNew;
     }
 
     public String getDiscountPercentage() {

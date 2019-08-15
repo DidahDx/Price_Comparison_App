@@ -19,32 +19,26 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.GridViewHolder>{
+public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHolder>{
 
-    public static final int SPAN_COUNT_ONE = 1;
-    public static final int SPAN_COUNT_TWO = 2;
-
-    private static final int LIST_VIEW = 1;
-    private static final int GRID_VIEW = 2;
 
     private GridLayoutManager mLayoutManager;
     ArrayList<Products> products;
 
-    private RecycleGridAdapter.OnItemClickListener mListener;
-
+    private SavedAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onShareClick(int position);
-        void onSaveClick(int position);
+
     }
 
-    public void setOnItemClickListener(RecycleGridAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(SavedAdapter.OnItemClickListener listener){
         mListener=listener;
     }
 
 
-     class GridViewHolder extends RecyclerView.ViewHolder{
+    class GridViewHolder extends RecyclerView.ViewHolder{
         public TextView productDescrption;
         public TextView NewPrice;
         public TextView OldPrice;
@@ -52,22 +46,20 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         public ProgressBar progressBar;
         public ImageView imgLogo;
         public ImageView share;
-        public ImageView save;
-        public ImageView saved;
+
         TextView discount;
 
-        public GridViewHolder(@NonNull View itemView, final RecycleGridAdapter.OnItemClickListener listener, int viewType) {
+        public GridViewHolder(@NonNull View itemView, final SavedAdapter.OnItemClickListener listener, int viewType) {
             super(itemView);
 
-            productDescrption=itemView.findViewById(R.id.product_description);
-            NewPrice=itemView.findViewById(R.id.new_price);
-            OldPrice=itemView.findViewById(R.id.old_price);
-            progressBar=itemView.findViewById(R.id.image_progress);
-            img=itemView.findViewById(R.id.product_image);
-            imgLogo=itemView.findViewById(R.id.website_logo);
-            share=itemView.findViewById(R.id.share);
-            save=itemView.findViewById(R.id.save);
-            discount=itemView.findViewById(R.id.discount);
+            productDescrption=itemView.findViewById(R.id.save_product_description);
+            NewPrice=itemView.findViewById(R.id.save_new_price);
+            OldPrice=itemView.findViewById(R.id.save_old_price);
+            progressBar=itemView.findViewById(R.id.save_image_progress);
+            img=itemView.findViewById(R.id.save_product_image);
+            imgLogo=itemView.findViewById(R.id.save_website_logo);
+            share=itemView.findViewById(R.id.save_share);
+            discount=itemView.findViewById(R.id.save_discount);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -97,25 +89,11 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
                 }
             });
 
-            //click listener for save
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener!=null){
-                        int position=getAdapterPosition();
-                        if (position!=RecyclerView.NO_POSITION){
-                            listener.onSaveClick(position);
-
-                        }
-                    }
-                }
-            });
-
         }
     }
 
 
-    public RecycleGridAdapter(ArrayList<Products> prod,GridLayoutManager gridLayoutManager){
+    public SavedAdapter(ArrayList<Products> prod,GridLayoutManager gridLayoutManager){
         products=prod;
         mLayoutManager=gridLayoutManager;
 
@@ -124,41 +102,21 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
     @NonNull
     @Override
-    public GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SavedAdapter.GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        if (viewType==LIST_VIEW){
-            v=LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
-        }else {
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item,parent,false);
-        }
 
-        return new RecycleGridAdapter.GridViewHolder(v,mListener,viewType);
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_list,parent,false);
+
+        return new SavedAdapter.GridViewHolder(v,mListener,viewType);
     }
 
     @Override
-    public void onBindViewHolder(final GridViewHolder holder, int position) {
+    public void onBindViewHolder(final SavedAdapter.GridViewHolder holder, int position) {
 
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
-
-
         holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-//        if (currentProduct.getDiscountPercentage() ==null){
-//            holder.discount.setVisibility(View.GONE);
-//        }else{
-//            if (!currentProduct.getProductDescription().isEmpty() && currentProduct.getProductDescription().contains("%")){
-//                if (currentProduct.getProductDescription().length()>2){
-//                    holder.discount.setVisibility(View.VISIBLE);
-//                }else {
-//                    holder.discount.setVisibility(View.GONE);
-//                }
-//            }else{
-//                holder.discount.setVisibility(View.GONE);
-//            }
-//        }
         holder.discount.setText(currentProduct.getDiscountPercentage());
-
-
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
@@ -180,12 +138,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        int spanCount = mLayoutManager.getSpanCount();
-        if (spanCount == SPAN_COUNT_ONE) {
-            return LIST_VIEW;
-        } else {
-            return GRID_VIEW;
-        }
+       return 1;
     }
 
 
@@ -193,4 +146,5 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
     public int getItemCount() {
         return products.size();
     }
+
 }

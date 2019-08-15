@@ -40,12 +40,12 @@
                     android:paddingTop="7dp"
                     android:id="@+id/search_product"
                     android:textColor="@color/black"
-                    android:paddingLeft="25dp"
+                    android:paddingLeft="15dp"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:paddingRight="85dp"
                     android:hint="@string/search_hint"
-                    android:paddingStart="25dp"
+                    android:paddingStart="15dp"
                     android:paddingEnd="85dp"
                     android:imeOptions="actionSearch"    />
 

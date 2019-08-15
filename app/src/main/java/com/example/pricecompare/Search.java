@@ -104,13 +104,13 @@ public class Search extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_menu,menu);
-        MenuItem item=menu.findItem(R.id.action_search);
-//         searchView.setMenuItem(item);
-         return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.home_menu,menu);
+//        MenuItem item=menu.findItem(R.id.action_search);
+////         searchView.setMenuItem(item);
+//         return true;
+//    }
 
 
 
@@ -118,24 +118,24 @@ public class Search extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-
-            //used to search for products
-            case R.id.action_search:
-                if(!editSearch.getText().toString().trim().isEmpty()){
-                    buildJumiaUrl();
-                    buildKilimallUrl();
-                    buildMasokoUrl();
-
-                    Intent intent=new Intent(Search.this,ProductList.class);
-                    intent.putExtra("JumiaUrl",jumiaUrl);
-                    intent.putExtra("kilimallUrl",kilimallUrl);
-                    intent.putExtra("MasokoUrl",MasokoUrl);
-                    intent.putExtra("ProductName",editSearch.getText().toString());
-                    startActivity(intent);
-                }else {
-                    Toast.makeText(Search.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
-                }
-                break;
+//
+//            //used to search for products
+//            case R.id.action_search:
+//                if(!editSearch.getText().toString().trim().isEmpty()){
+//                    buildJumiaUrl();
+//                    buildKilimallUrl();
+//                    buildMasokoUrl();
+//
+//                    Intent intent=new Intent(Search.this,ProductList.class);
+//                    intent.putExtra("JumiaUrl",jumiaUrl);
+//                    intent.putExtra("kilimallUrl",kilimallUrl);
+//                    intent.putExtra("MasokoUrl",MasokoUrl);
+//                    intent.putExtra("ProductName",editSearch.getText().toString());
+//                    startActivity(intent);
+//                }else {
+//                    Toast.makeText(Search.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
+//                }
+//                break;
 
             //back button used to close this activity
             case android.R.id.home:

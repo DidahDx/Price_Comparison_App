@@ -8,6 +8,29 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_navigation_drawer">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/compare_image"
+        android:text="Best comparing prices mobile app"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:maxLines="2"
+        android:textSize="26sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold|italic"
+        />
+    <ImageView
+        android:id="@+id/compare_image"
+        android:layout_width="match_parent"
+
+        android:layout_height="200dp"
+        android:layout_above="@id/product_name"
+        android:src="@mipmap/ic_price_comare"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="50dp"/>
+
 
     <TextView
         android:layout_width="match_parent"

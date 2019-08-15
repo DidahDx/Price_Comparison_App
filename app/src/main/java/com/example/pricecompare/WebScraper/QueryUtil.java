@@ -45,7 +45,7 @@ public class QueryUtil {
 
     //method is used to web scrape the online websites
     private static ArrayList<Products> extractShoppingData() {
-        df = new DecimalFormat("#.#");
+        df = new DecimalFormat("#");
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Products> products = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class QueryUtil {
                 String productLink=row.select("a.lazyload").attr("href");
                 String NewPrice=row.select("em.sale-price").text();
                 String priceOld=row.select("div.goods-discount").text();
-                String percentageOff=null;
+                String percentageOff="";
 
                 try{
                 if (!priceOld.isEmpty()&& priceOld.indexOf('-') == -1){
@@ -92,14 +92,14 @@ public class QueryUtil {
                     int Old=Integer.parseInt(priceOld);
 
                     int Nprice=Integer.parseInt(NewPrice.trim().replace("KSh","").replace(",","").trim());
-                    percentageOff="";
+
                     priceOld="KSh "+ (Old + Nprice);
 
                     float dOld=Float.valueOf(priceOld.replace("KSh","").replace(",",""));
                     float dNew=Float.valueOf(NewPrice.replace("KSh","").replace(",",""));
-
+                    percentageOff="-";
                 percentageOff+=df.format(100-((dNew/dOld)*100));
-                percentageOff+="% OFF";
+                percentageOff+="%";
 
                 }}
                 catch (NumberFormatException e){
@@ -141,15 +141,16 @@ public class QueryUtil {
                     NewPrice= NewPrice.substring(0,NewPrice.length()-3);
                 }
 
-                String percentageOff=null;
+                String percentageOff="";
                 if (!priceOld.isEmpty() && priceOld.indexOf('-') == -1){
+
 
                     try {
                         float dOld=Float.valueOf(priceOld.replace("KES","").replace(",",""));
                         float dNew=Float.valueOf(NewPrice.replace("KES","").replace(",",""));
-
+                        percentageOff="-";
                         percentageOff+=df.format(100-((dNew/dOld)*100));
-                        percentageOff+="% OFF";
+                        percentageOff+="%";
                     }catch (NumberFormatException e){
                         Log.d(LOG_TAG,"Error in Caculation"+e.getStackTrace(),e);
                     }
@@ -178,12 +179,7 @@ public class QueryUtil {
                     NewPrice=NewPrice.replace(priceOld,"");
                     String NewProduct=row.select("span.new-flag").text();
 
-                    if (percentageOff.indexOf('-') != -1){
-                        percentageOff=percentageOff.replace("-","");
-                        percentageOff+=" OFF";
-                    }else {
-                        percentageOff=null;
-                    }
+
 
 
                     pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);

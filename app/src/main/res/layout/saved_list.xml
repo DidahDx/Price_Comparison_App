@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    app:cardCornerRadius="10dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="12dp"
+    android:background="@drawable/item_background"
+    android:paddingStart="16dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:paddingLeft="16dp"
+    android:layout_margin="1dp"
+    android:paddingEnd="16dp"
+    android:paddingRight="16dp"
+    android:focusable="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:paddingTop="14dp"
+        android:paddingBottom="12dp"
+        android:id="@+id/save_list_product"
+        android:background="@drawable/item_background"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp">
+
+        <RelativeLayout
+            android:layout_width="95dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="28dp"
+            >
+
+            <!-- Image to show the product image -->
+            <ImageView
+                android:id="@+id/save_product_image"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                />
+
+            <ProgressBar
+                android:id="@+id/save_image_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                />
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+
+                <!--  website logo image -->
+                <ImageView
+                    android:id="@+id/save_website_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/save_product_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="Long placeholder for the  descrption of the product should not be too long " />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/save_prices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/save_new_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textColor="#000"
+                        android:textSize="12sp"
+                        tools:text="$12000" />
+
+                    <TextView
+                        android:id="@+id/save_old_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textColor="#000"
+                        android:textSize="12sp"
+                        tools:text="3000"
+                        />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/save_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/discount_box"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    tools:text="-30%"
+                    android:maxLines="1"
+                    android:textStyle="bold|italic"
+                    android:singleLine="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+        <!--layout-->
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginRight="0dp"
+            android:paddingLeft="8dp">
+
+
+
+
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="4dp"
+                android:id="@+id/save_share"
+                android:src="@drawable/share"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

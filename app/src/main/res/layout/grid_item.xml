@@ -47,23 +47,7 @@
                 android:id="@+id/website_logo"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:layout_toLeftOf="@id/website_name"
                 />
-
-            <!--  website name  -->
-            <TextView
-                android:id="@+id/website_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="1"
-
-                android:textAllCaps="true"
-                android:textColor="@color/textColorEarthquakeDetails"
-                android:textSize="12sp"
-                tools:text="website Name" />
 
         </LinearLayout>
 
@@ -95,20 +79,46 @@
         android:id="@+id/save"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:padding="3dp"
+        android:paddingLeft="3dp"
+        android:layout_marginRight="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/save"
+        android:layout_alignParentEnd="true"
+        android:paddingEnd="0dp" />
 
-        />
+    <ImageView
+        android:id="@+id/saved"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:layout_marginRight="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="4dp"
+        android:visibility="gone"
+        android:paddingBottom="4dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_saved"
+        android:layout_alignParentEnd="true"
+        android:paddingEnd="0dp" />
 
     <ImageView
         android:id="@+id/share"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/share"
-        android:padding="3dp" />
+        android:paddingLeft="0dp"
+        android:paddingTop="4dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="0dp"
+        android:layout_alignParentStart="true"
+        android:paddingEnd="3dp" />
 
 <LinearLayout
     android:id="@+id/linear_bottom"
@@ -125,7 +135,6 @@
         android:maxLines="4"
         android:textColor="@color/textColorEarthquakeLocation"
         android:textSize="16sp"
-        android:text="Long placeholder for the  descrption of the product should not be too long"
         tools:text="Long placeholder for the  descrption of the product should not be too long " />
 
     <RelativeLayout
@@ -164,14 +173,13 @@
             android:background="@drawable/discount_box"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:layout_marginLeft="20dp"
             android:textColor="@color/white"
-            android:padding="3dp"
             tools:text="-30%"
+            android:maxLines="1"
             android:textStyle="bold|italic"
-            android:textSize="14sp"
-            android:layout_toRightOf="@id/prices"
-            android:layout_marginStart="20dp" />
+            android:singleLine="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 </LinearLayout>

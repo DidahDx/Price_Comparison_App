@@ -2,33 +2,23 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:title="Search"
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="always"/>
+
+
 
     <item
+        android:id="@+id/three_dots"
         android:title="More Options"
         app:showAsAction="always"
         android:icon="@drawable/three_dots">
         <menu>
 
-            <item
-                android:title="Login"
-                android:id="@+id/login_items"
-                android:icon="@drawable/ic_login"
-                />
+
             <item
                 android:title="Saved"
                 android:id="@+id/saved_items"
                 android:icon="@drawable/ic_saved_grey"
                 />
-            <item
-                android:title="Settings"
-                android:id="@+id/settings_items"
-                android:icon="@drawable/ic_settings"
-                />
+
 
         </menu>
     </item>
