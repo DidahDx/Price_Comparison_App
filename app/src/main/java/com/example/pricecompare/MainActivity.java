@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             user_email=currentUser.getEmail();
-            Toast.makeText(MainActivity.this,user_email,Toast.LENGTH_LONG).show();
+//            Toast.makeText(MainActivity.this,user_email,Toast.LENGTH_LONG).show();
             checkLogin=true;
             navUsername.setText(user_email);
 

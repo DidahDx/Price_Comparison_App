@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 
 import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_ONE;
 import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_TWO;
@@ -213,7 +214,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         // save RecyclerView state
         mBundleRecyclerViewState = new Bundle();
 
-         listState = gridRecyclerView.getLayoutManager().onSaveInstanceState();
+         listState = Objects.requireNonNull(gridRecyclerView.getLayoutManager()).onSaveInstanceState();
         outState.putParcelable(KEY_RECYCLER_STATE, listState);
 
     }

@@ -157,19 +157,24 @@
             android:paddingLeft="8dp">
 
 
-
-
-
             <ImageView
-                android:layout_width="50dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:padding="4dp"
                 android:id="@+id/save_share"
                 android:src="@drawable/share"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 />
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:id="@+id/save_delete"
+                android:padding="2dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
 

@@ -2,6 +2,7 @@ package com.example.pricecompare.AdaptersHelper;
 
 import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onShareClick(int position);
+        void onDeleteClick(int position);
 
     }
 
@@ -46,6 +48,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
         public ProgressBar progressBar;
         public ImageView imgLogo;
         public ImageView share;
+        public ImageView delete;
 
         TextView discount;
 
@@ -60,6 +63,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
             imgLogo=itemView.findViewById(R.id.save_website_logo);
             share=itemView.findViewById(R.id.save_share);
             discount=itemView.findViewById(R.id.save_discount);
+            delete=itemView.findViewById(R.id.save_delete);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +90,18 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
                         }
                     }
 
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null){
+                        int position=getAdapterPosition();
+                        if (position!=RecyclerView.NO_POSITION){
+                            listener.onDeleteClick(position);
+                        }
+                    }
                 }
             });
 
