@@ -7,9 +7,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -37,8 +39,12 @@ import com.example.pricecompare.WebScraper.QueryUtil;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,6 +85,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     Toolbar toolbar;
     DatabaseReference databaseReference;
     FirebaseAuth mAuth;
+    String TAG=ProductList.class.getSimpleName();
     FirebaseUser firebaseUser;
 
     @Override
@@ -110,6 +117,31 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         relativeLayout.setVisibility(View.GONE);
         Spinner mySpinner=findViewById(R.id.sort_product);
 
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            String selectedText = null;
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedText = parentView.getItemAtPosition(position).toString();
+                switch (selectedText){
+                    case "Low to High Price":
+                        sortPriceOrder(0);
+                        gridAdapter.notifyDataSetChanged();
+                        break;
+
+                    case "High to Low Price":
+                        sortPriceOrder(1);
+                        gridAdapter.notifyDataSetChanged();
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+
+        });
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -167,10 +199,10 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 ConnectivityManager conManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo=conManager.getActiveNetworkInfo();
                 if (networkInfo !=null && networkInfo.isConnected()) {
-                    getSupportLoaderManager().restartLoader(PRODUCT_LOADER_ID, null,  ProductList.this);
-                    emptyState.setVisibility(View.GONE);
                     progressBar1.setVisibility(View.VISIBLE);
+                    emptyState.setVisibility(View.GONE);
                     tryAgain.setVisibility(View.GONE);
+                    getSupportLoaderManager().restartLoader(PRODUCT_LOADER_ID, null,  ProductList.this);
                 }else{
                     emptyState.setText(getString(R.string.no_network));
                     emptyState.setVisibility(View.VISIBLE);
@@ -191,6 +223,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         if (networkInfo !=null && networkInfo.isConnected()){
 
             if(alreadySearched==0) {
+                progressBar1.setVisibility(View.VISIBLE);
                 getSupportLoaderManager().initLoader(PRODUCT_LOADER_ID, null, this);
                 alreadySearched=1;
             }
@@ -205,6 +238,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         switchIcon(switchLayout);
 
     }
+
+
 
     //saving instances for before rotation
     @Override
@@ -277,20 +312,46 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 }
 
                 @Override
-                public void onSaveClick(int position) {
+                public void onSaveClick(final int position) {
                     Products pro=product.get(position);
                     firebaseUser = mAuth.getCurrentUser();
                     if (firebaseUser!=null){
 
 
-                        String userid =firebaseUser.getUid();
-                        String id=databaseReference.push().getKey();
+                        if (!pro.isImageChanged()){
+                            //used to save a product
+                            String userid =firebaseUser.getUid();
+                            String id=databaseReference.push().getKey();
 
-                        Products products=new Products(pro.getProductDescription(),pro.getPriceOld(),pro.getImageProduct()
-                                ,pro.getUrlLink(),pro.getImageLogo(),pro.getPriceNew(),pro.getDiscountPercentage());
+                            Products products=new Products(pro.getProductDescription(),pro.getPriceOld(),pro.getImageProduct()
+                                    ,pro.getUrlLink(),pro.getImageLogo(),pro.getPriceNew(),pro.getDiscountPercentage());
 
-                        databaseReference.child(userid).child(id).setValue(products);
-                        Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
+                            databaseReference.child(userid).child(id).setValue(products);
+                            Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
+                            gridAdapter.changeImage(position);
+                        }else {
+                            //used to delete a saved product
+                            DatabaseReference ref =FirebaseDatabase.getInstance().getReference("SavedProducts").child(firebaseUser.getUid());
+                            Query deleteQuery = ref.orderByChild("urlLink").equalTo(pro.getUrlLink());
+
+                            deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot deleteSnapShot : dataSnapshot.getChildren()){
+                                        deleteSnapShot.getRef().removeValue();
+                                        Toast.makeText(ProductList.this, "Item removed "+position, Toast.LENGTH_SHORT).show();
+                                        gridAdapter.removeImage(position);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.e(TAG, "onCancelled", databaseError.toException());
+                                }
+                            });
+                        }
+
                     }else {
                         startActivity(new Intent(ProductList.this,LoginPage.class));
                     }
@@ -411,6 +472,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         public ArrayList<Products> loadInBackground() {
             ArrayList<Products>  prod= (ArrayList<Products>) QueryUtil.fetchWebsiteData(JumiaUrl,kilimallUrl,MasokoUrl);
 
+
             //do not sort when there is no data
             if(prod!=null) {
 
@@ -456,5 +518,56 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         product=data;
         setAdapter();
     }
+
+
+
+    public void sortPriceOrder(final int order){
+
+        progressBar1.setVisibility(View.VISIBLE);
+
+        if(product!=null) {
+
+            //    used in sorting
+            Collections.sort(product, new Comparator<Products>() {
+                @Override
+                public int compare(Products o1, Products o2) {
+                    String p1 = o1.getPriceNew().trim();
+                    String p2 = o2.getPriceNew().trim();
+
+                    //removing unwanted KSH , KES  and  ranges between prices, before sorting
+                    p1 = p1.replace("KSh", "");
+                    p1 = p1.replace("KES", "");
+                    p1 = p1.replace(",", "");
+                    if (p1.indexOf('-') != -1) {
+                        p1 = p1.replace(p1.substring(p1.indexOf('-') + 1), "");
+                        p1 = p1.replace("-", "");
+                    }
+                    p1 = p1.trim();
+
+                    p2 = p2.replace("KSh", "");
+                    p2 = p2.replace(",", "");
+                    p2 = p2.replace("KES", "");
+                    if (p2.indexOf('-') != -1) {
+                        p2 = p2.replace(p2.substring(p2.indexOf('-') + 1), "");
+                        p2 = p2.replace("-", "");
+                    }
+                    p2 = p2.trim();
+
+                    switch (order){
+                        case 0:
+                            return Integer.valueOf(p1) - (Integer.valueOf(p2));
+                        case 1:
+                             return Integer.valueOf(p2) - (Integer.valueOf(p1));
+                        default:
+                                return Integer.valueOf(p1) - (Integer.valueOf(p2));
+
+                    }
+                }
+            });
+
+    }
+        progressBar1.setVisibility(View.GONE);
+    }
+
 
 }

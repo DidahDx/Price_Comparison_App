@@ -29,6 +29,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
     private GridLayoutManager mLayoutManager;
     ArrayList<Products> products;
+    int pos;
 
     private RecycleGridAdapter.OnItemClickListener mListener;
 
@@ -140,25 +141,8 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
         Products currentProduct=products.get(position);
         holder.OldPrice.setText(currentProduct.getPriceOld());
-
-
         holder.OldPrice.setPaintFlags(holder.OldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-//        if (currentProduct.getDiscountPercentage() ==null){
-//            holder.discount.setVisibility(View.GONE);
-//        }else{
-//            if (!currentProduct.getProductDescription().isEmpty() && currentProduct.getProductDescription().contains("%")){
-//                if (currentProduct.getProductDescription().length()>2){
-//                    holder.discount.setVisibility(View.VISIBLE);
-//                }else {
-//                    holder.discount.setVisibility(View.GONE);
-//                }
-//            }else{
-//                holder.discount.setVisibility(View.GONE);
-//            }
-//        }
         holder.discount.setText(currentProduct.getDiscountPercentage());
-
-
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
@@ -176,6 +160,12 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
         Picasso.get().load(currentProduct.getImageLogo()).into(holder.imgLogo);
 
+        if (products.get(position).isImageChanged()){
+            holder.save.setImageResource(R.drawable.ic_saved);
+        }else {
+            holder.save.setImageResource(R.drawable.save);
+        }
+
     }
 
     @Override
@@ -192,5 +182,17 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
     @Override
     public int getItemCount() {
         return products.size();
+    }
+
+    //used for adding saved
+    public void changeImage(int index) {
+        products.get(index).setImageChanged(true);
+        notifyItemChanged(index);
+    }
+
+    //used for removing saved
+    public void removeImage(int index){
+        products.get(index).setImageChanged(false);
+        notifyItemChanged(index);
     }
 }

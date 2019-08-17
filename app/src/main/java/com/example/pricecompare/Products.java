@@ -12,6 +12,8 @@ public class Products {
     private String urlLink;
     private String discountPercentage;
 
+    public boolean isImageChanged;
+
     private Products(){
     }
 
@@ -27,6 +29,14 @@ public class Products {
         this.imageLogo=imageLogo;
     }
 
+
+    public boolean isImageChanged() {
+        return isImageChanged;
+    }
+
+    public void setImageChanged(boolean imageChanged) {
+        isImageChanged = imageChanged;
+    }
 
     public String getImageLogo() {
         return imageLogo;
