@@ -94,10 +94,12 @@ public class SignUp extends AppCompatActivity {
                                 });
 
                     }else {
+                        progressBar.setVisibility(View.GONE);
                         errorMessage.setText(getString(R.string.password_dont_match));
                     }
 
                 }else{
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(SignUp.this, "Fill both Email and Passwords Fields",
                             Toast.LENGTH_LONG).show();
                 }
