@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -293,9 +294,19 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                     Products pro=product.get(position);
                     String url=pro.getUrlLink();
 
-                    Intent i=new Intent(ProductList.this,webView.class);
-                    i.putExtra("UrlWebLink",url);
-                    startActivity(i);
+                    try {
+                        Intent webBrowser = new Intent(Intent.ACTION_VIEW);
+                        webBrowser.setData(Uri.parse(url));
+                        startActivity(webBrowser);
+                    }catch (Exception e){
+                        Toast.makeText(ProductList.this, "Browser not Found ", Toast.LENGTH_LONG).show();
+                        //internal web browser
+                        Intent i=new Intent(ProductList.this,webView.class);
+                        i.putExtra("UrlWebLink",url);
+                        startActivity(i);
+                    }
+
+
                 }
 
                 @Override

@@ -1,6 +1,7 @@
 package com.example.pricecompare;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pricecompare.AdaptersHelper.SavedAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ public class SavedProducts extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Toolbar toolbar;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     String TAG=SavedProducts.class.getSimpleName();
 
     @Override
@@ -44,6 +46,9 @@ public class SavedProducts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_products);
         firebaseAuth=FirebaseAuth.getInstance();
+
+        // Obtain the Firebase Analytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         firebaseUser=firebaseAuth.getCurrentUser();
         if (firebaseUser !=null) {
@@ -82,7 +87,6 @@ public class SavedProducts extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (product!=null){
-
                     product.clear();
                 }
 
@@ -116,9 +120,18 @@ public class SavedProducts extends AppCompatActivity {
                 Products pro=product.get(position);
                 String url=pro.getUrlLink();
 
-                Intent i=new Intent(SavedProducts.this,webView.class);
-                i.putExtra("UrlWebLink",url);
-                startActivity(i);
+                try {
+                    Intent webBrowser = new Intent(Intent.ACTION_VIEW);
+                    webBrowser.setData(Uri.parse(url));
+                    startActivity(webBrowser);
+                }catch (Exception e){
+                    Toast.makeText(SavedProducts.this, "Browser not Found ", Toast.LENGTH_LONG).show();
+                    //internal web browser
+                    Intent i=new Intent(SavedProducts.this,webView.class);
+                    i.putExtra("UrlWebLink",url);
+                    startActivity(i);
+                }
+
             }
 
             @Override
