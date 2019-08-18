@@ -35,7 +35,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp">
@@ -73,19 +73,18 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-         />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/empty_state"
         android:layout_gravity="center"
         />
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
     <Button
         android:layout_width="wrap_content"

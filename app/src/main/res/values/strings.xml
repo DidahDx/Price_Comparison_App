@@ -21,8 +21,6 @@
     <string-array name="sort">
         <item>Low to High Price</item>
         <item>High to Low Price</item>
-        <item>Low to High %OFF</item>
-        <item>High to Low %OFF</item>
     </string-array>
 
     <string name="title_activity_login">Sign in</string>

@@ -89,20 +89,6 @@
         android:layout_alignParentEnd="true"
         android:paddingEnd="0dp" />
 
-    <ImageView
-        android:id="@+id/saved"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:paddingLeft="3dp"
-        android:layout_marginRight="0dp"
-        android:paddingRight="0dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
-        android:paddingBottom="4dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_saved"
-        android:layout_alignParentEnd="true"
-        android:paddingEnd="0dp" />
 
     <ImageView
         android:id="@+id/share"
