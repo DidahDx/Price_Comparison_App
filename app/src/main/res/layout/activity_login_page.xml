@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/login_button"
             android:drawableStart="@drawable/ic_login"
+            android:background="@drawable/button_backgrond"
             android:text="@string/login_button"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
@@ -85,6 +86,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/sign_up_button"
         android:layout_marginRight="20dp"
+        android:background="@drawable/button_backgrond"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/signup"/>
