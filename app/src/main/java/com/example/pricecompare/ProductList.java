@@ -250,7 +250,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         // save RecyclerView state
         mBundleRecyclerViewState = new Bundle();
 
-         listState = Objects.requireNonNull(gridRecyclerView.getLayoutManager()).onSaveInstanceState();
+
+         listState = gridlayoutManager.onSaveInstanceState();
         outState.putParcelable(KEY_RECYCLER_STATE, listState);
 
     }
@@ -276,7 +277,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
     protected void onResume() {
         super.onResume();
       if (listState!=null) {
-          gridRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+          gridlayoutManager.onRestoreInstanceState(listState);
       }
     }
 
@@ -337,6 +338,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                             Products products=new Products(pro.getProductDescription(),pro.getPriceOld(),pro.getImageProduct()
                                     ,pro.getUrlLink(),pro.getImageLogo(),pro.getPriceNew(),pro.getDiscountPercentage());
 
+                            assert id != null;
                             databaseReference.child(userid).child(id).setValue(products);
                             Toast.makeText(ProductList.this,"Saved "+position,Toast.LENGTH_SHORT).show();
                             gridAdapter.changeImage(position);
