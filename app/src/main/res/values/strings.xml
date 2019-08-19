@@ -40,4 +40,6 @@
     <string name="hint_confirm_password">Confirm your password</string>
     <string name="password_dont_match">Passwords do not match</string>
     <string name="logOut">LogOut</string>
+    <string name="google_sign_in">Google Sign In</string>
+    <string name="or">OR</string>
 </resources>

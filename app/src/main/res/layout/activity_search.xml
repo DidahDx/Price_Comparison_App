@@ -20,6 +20,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarSearch"
             android:layout_width="match_parent"
+            android:layout_marginRight="12dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -83,10 +84,12 @@
         </FrameLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_layout"
+        />
 
-
-
-
-    
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
