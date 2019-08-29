@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,8 @@ public class SavedProducts extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Toolbar toolbar;
 
+    TextView noData;
+
     private FirebaseAnalytics mFirebaseAnalytics;
     String TAG=SavedProducts.class.getSimpleName();
 
@@ -63,8 +67,11 @@ public class SavedProducts extends AppCompatActivity {
         //used to display the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        noData=findViewById(R.id.Hint);
+        noData.setVisibility(View.GONE);
         recyclerView=findViewById(R.id.rv_saved);
         gridlayoutManager=new GridLayoutManager(this,currentViewMode);
+
 
     }
 
@@ -86,14 +93,20 @@ public class SavedProducts extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (product!=null){
+                if (product != null) {
                     product.clear();
-                }
 
-                for (DataSnapshot productSnapshot:dataSnapshot.getChildren()){
-                    Products pro=productSnapshot.getValue(Products.class);
+                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                    Products pro = productSnapshot.getValue(Products.class);
                     product.add(pro);
                 }
+
+                if (product.size() == 0) {
+                    noData.setVisibility(View.VISIBLE);
+                }else {
+                    noData.setVisibility(View.GONE);
+                }
+            }
                 setAdapter();
             }
 
