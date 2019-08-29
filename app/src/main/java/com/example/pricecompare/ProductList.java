@@ -389,12 +389,17 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                 //back button used to close this activity
             case android.R.id.home:
                 mBundleRecyclerViewState=null;
-                MainActivity.editSearch.setFocusable(true);
                 finish();
                 break;
 
             case R.id.saved_items:
-                startActivity(new Intent(ProductList.this,SavedProducts.class));
+                firebaseUser = mAuth.getCurrentUser();
+                if (firebaseUser!=null){
+                    startActivity(new Intent(ProductList.this,SavedProducts.class));
+                }else {
+                    startActivity(new Intent(ProductList.this,LoginPage.class));
+
+                }
                 break;
 
         }
@@ -432,20 +437,22 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
         if (data!=null){
             UpdateUi(data);
             relativeLayout.setVisibility(View.VISIBLE);
-        }else {
-            emptyState.setText(getString(R.string.no_data));
-            emptyState.setVisibility(View.VISIBLE);
-            tryAgain.setVisibility(View.VISIBLE);
-            relativeLayout.setVisibility(View.GONE);
-        }
 
-        //when there is an error loading data
-        if ( data.size() <= 0) {
+            //when there is an error loading data
+            if ( data.size() <= 0) {
+                emptyState.setText(getString(R.string.no_data));
+                emptyState.setVisibility(View.VISIBLE);
+                tryAgain.setVisibility(View.VISIBLE);
+                relativeLayout.setVisibility(View.GONE);
+            }
+        }else {
             emptyState.setText(getString(R.string.load_error));
             emptyState.setVisibility(View.VISIBLE);
             tryAgain.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.GONE);
         }
+
+
     }
 
     @Override
