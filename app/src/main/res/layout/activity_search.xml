@@ -84,12 +84,7 @@
         </FrameLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_marginTop="120dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search_layout"
-        />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

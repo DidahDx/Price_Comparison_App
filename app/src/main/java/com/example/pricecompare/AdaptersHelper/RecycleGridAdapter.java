@@ -154,12 +154,13 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
             @Override
             public void onError(Exception e) {
-
+                holder.img.setImageResource(R.drawable.ic_image_load_failed);
             }
         });
 
         Picasso.get().load(currentProduct.getImageLogo()).into(holder.imgLogo);
 
+        //used to change icon of saved
         if (products.get(position).isImageChanged()){
             holder.save.setImageResource(R.drawable.ic_saved);
         }else {

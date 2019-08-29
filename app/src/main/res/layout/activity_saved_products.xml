@@ -17,12 +17,24 @@
         app:titleTextColor="@color/white">
 
     </androidx.appcompat.widget.Toolbar>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Hint"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:visibility="visible"
+        android:textColor="@color/black"
+        android:text="@string/no_items_saved"
+        android:elevation="20dp"
+        />
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rv_saved">
 
 </androidx.recyclerview.widget.RecyclerView>
+
+
 
 </LinearLayout>
