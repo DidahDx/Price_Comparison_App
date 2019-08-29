@@ -154,6 +154,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
             @Override
             public void onError(Exception e) {
+                holder.progressBar.setVisibility(View.GONE);
                 holder.img.setImageResource(R.drawable.ic_image_load_failed);
             }
         });

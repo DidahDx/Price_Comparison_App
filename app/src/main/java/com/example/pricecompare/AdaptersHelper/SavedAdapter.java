@@ -143,7 +143,8 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
 
             @Override
             public void onError(Exception e) {
-
+                holder.progressBar.setVisibility(View.GONE);
+                holder.img.setImageResource(R.drawable.ic_image_load_failed);
             }
         });
 
