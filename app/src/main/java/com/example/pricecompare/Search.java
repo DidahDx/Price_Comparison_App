@@ -2,13 +2,18 @@ package com.example.pricecompare;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pricecompare.AdaptersHelper.RecentAdapter;
+import com.example.pricecompare.DataModel.Recent;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.Result;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -37,7 +44,12 @@ public class Search extends AppCompatActivity {
     static String kilimallUrl;
     static String MasokoUrl;
     private static final int RECOGNIZER_RESULT=1;
+    static ArrayList<Recent>  recentSearch=new ArrayList<Recent>();
+    static ArrayList<Recent>  databaseProducts=new ArrayList<Recent>();
 
+    RecyclerView recyclerView;
+    GridLayoutManager gridLayoutManager;
+    RecentAdapter recentAdapter;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -50,14 +62,88 @@ public class Search extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Toolbar toolbar=findViewById(R.id.toolbarSearch);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Material search");
+
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
         //used to display the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        recyclerView=findViewById(R.id.rv_recent);
+        gridLayoutManager=new GridLayoutManager(this,1);
+        recentAdapter=new RecentAdapter(recentSearch,gridLayoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(recentAdapter);
+
+        recentAdapter.setOnItemClickListener(new RecentAdapter.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(int position) {
+                Recent recent=recentSearch.get(position);
+                editSearch.setText(recent.getName());
+
+                if(!editSearch.getText().toString().trim().isEmpty()) {
+                    buildJumiaUrl();
+                    buildKilimallUrl();
+                    buildMasokoUrl();
+
+                    Intent i =new Intent(Search.this,ProductList.class);
+                    i.putExtra("JumiaUrl",jumiaUrl);
+                    i.putExtra("kilimallUrl",kilimallUrl);
+                    i.putExtra("MasokoUrl",MasokoUrl);
+                    i.putExtra("ProductName",editSearch.getText().toString());
+                    startActivity(i);
+                }else {
+                    Toast.makeText(Search.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                Recent recent=recentSearch.get(position);
+                recentSearch.remove(recent);
+                recentAdapter.notifyDataSetChanged();
+            }
+
+        });
+
+
         editSearch=findViewById(R.id.search_product);
         editSearch.setOnEditorActionListener(onEditorActionListener);
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s!=null && !s.toString().trim().isEmpty()){
+                    ArrayList<Recent> found=new ArrayList<Recent>();
+                    for (Recent item:  recentSearch){
+                        if (item.getName().contains(s.toString())){
+                            found.add(item);
+                        }
+                    }
+
+                    recentAdapter=new RecentAdapter(found,gridLayoutManager);
+                    recyclerView.setAdapter(recentAdapter);
+                    RecentListener(found);
+                }else{
+                    recentAdapter=new RecentAdapter(recentSearch,gridLayoutManager);
+                    recyclerView.setAdapter(recentAdapter);
+                    RecentListener(recentSearch);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
         voiceSearch=findViewById(R.id.voice_search);
         barcodeSearch=findViewById(R.id.barcode_search);
 
@@ -89,6 +175,8 @@ public class Search extends AppCompatActivity {
 
 
 
+
+
     }
 
 
@@ -99,11 +187,14 @@ public class Search extends AppCompatActivity {
         if (requestCode==RECOGNIZER_RESULT && resultCode==RESULT_OK && data!=null){
             ArrayList<String> matches=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             editSearch.setText(matches.get(0).toString());
-            
-            if(!editSearch.getText().toString().trim().isEmpty()){
+
+            if(!editSearch.getText().toString().trim().isEmpty()) {
                 buildJumiaUrl();
                 buildKilimallUrl();
                 buildMasokoUrl();
+
+                    recentSearch.add(new Recent(editSearch.getText().toString(), R.drawable.ic_mic, R.drawable.ic_close));
+
                 Intent i =new Intent(Search.this,ProductList.class);
                 i.putExtra("JumiaUrl",jumiaUrl);
                 i.putExtra("kilimallUrl",kilimallUrl);
@@ -145,6 +236,9 @@ public class Search extends AppCompatActivity {
                         buildJumiaUrl();
                         buildKilimallUrl();
                         buildMasokoUrl();
+
+                            recentSearch.add(new Recent(editSearch.getText().toString(), R.drawable.ic_suggest, R.drawable.ic_close));
+
                         Intent i =new Intent(Search.this,ProductList.class);
                         i.putExtra("JumiaUrl",jumiaUrl);
                         i.putExtra("kilimallUrl",kilimallUrl);
@@ -185,4 +279,48 @@ public class Search extends AppCompatActivity {
         return s;
     }
 
+
+    public void RecentListener(final ArrayList<Recent> list){
+        recentAdapter.setOnItemClickListener(new RecentAdapter.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(int position) {
+                Recent recent=list.get(position);
+                editSearch.setText(recent.getName());
+
+                if(!editSearch.getText().toString().trim().isEmpty()) {
+                    buildJumiaUrl();
+                    buildKilimallUrl();
+                    buildMasokoUrl();
+
+                    Intent i =new Intent(Search.this,ProductList.class);
+                    i.putExtra("JumiaUrl",jumiaUrl);
+                    i.putExtra("kilimallUrl",kilimallUrl);
+                    i.putExtra("MasokoUrl",MasokoUrl);
+                    i.putExtra("ProductName",editSearch.getText().toString());
+                    startActivity(i);
+                }else {
+                    Toast.makeText(Search.this,"Search can not be empty",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                Recent recent=list.get(position);
+                list.remove(recent);
+                recentAdapter.notifyDataSetChanged();
+
+                if (recentSearch!=null) {
+                    if (recentSearch.indexOf(recent) != -1) {
+                        recentSearch.remove(recent);
+                    }
+                }
+
+
+            }
+
+
+        });
+    }
 }

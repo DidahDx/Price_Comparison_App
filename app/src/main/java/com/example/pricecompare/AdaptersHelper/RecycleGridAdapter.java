@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pricecompare.Products;
+import com.example.pricecompare.DataModel.Products;
 import com.example.pricecompare.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -146,6 +146,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
+        holder.imgLogo.setContentDescription(currentProduct.getImgLogoDescrption());
         Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
             @Override
             public void onSuccess() {
@@ -155,7 +156,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
             @Override
             public void onError(Exception e) {
                 holder.progressBar.setVisibility(View.GONE);
-                holder.img.setImageResource(R.drawable.ic_image_load_failed);
+                holder.img.setImageResource(R.drawable.fail_image_load);
             }
         });
 

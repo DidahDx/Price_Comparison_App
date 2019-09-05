@@ -23,6 +23,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
+import com.example.pricecompare.DataModel.Recent;
 import com.example.pricecompare.WebScraper.QueryUtil;
 import com.example.pricecompare.WebScraper.ScannerQuery;
 import com.google.zxing.Result;
@@ -32,6 +33,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+import static com.example.pricecompare.Search.editSearch;
 
 public class Scanner extends AppCompatActivity implements ZXingScannerView.ResultHandler, LoaderManager.LoaderCallbacks<String>{
 
@@ -89,8 +92,6 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
     }
 
 
-
-
     @Override
     public void handleResult(Result result) {
         scanResult=result.getText();
@@ -129,6 +130,7 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                 }
             });
 
+
             builder.setNeutralButton("Search", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -139,7 +141,10 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                     buildMasokoUrl();
 
                     Intent i =new Intent(Scanner.this,ProductList.class);
-                    Search.editSearch.setText(scanResult);
+
+                    Search.recentSearch.add(new Recent(scanResult,R.drawable.ic_barcode,R.drawable.ic_close));
+
+                    editSearch.setText(scanResult);
                     i.putExtra("JumiaUrl",jumiaUrl);
                     i.putExtra("kilimallUrl",kilimallUrl);
                     i.putExtra("MasokoUrl",MasokoUrl);
@@ -231,7 +236,8 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                        buildMasokoUrl();
 
                        Intent i =new Intent(Scanner.this,ProductList.class);
-                       Search.editSearch.setText(scanName);
+                       Search.recentSearch.add(new Recent(scanName,R.drawable.ic_barcode,R.drawable.ic_close));
+                       editSearch.setText(scanName);
                        i.putExtra("JumiaUrl",jumiaUrl);
                        i.putExtra("kilimallUrl",kilimallUrl);
                        i.putExtra("MasokoUrl",MasokoUrl);
@@ -268,7 +274,10 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                        buildMasokoUrl();
 
                        Intent i =new Intent(Scanner.this,ProductList.class);
-                       Search.editSearch.setText(scanName);
+
+                       Search.recentSearch.add(new Recent(scanName,R.drawable.ic_barcode,R.drawable.ic_close));
+
+                       editSearch.setText(scanName);
                        i.putExtra("JumiaUrl",jumiaUrl);
                        i.putExtra("kilimallUrl",kilimallUrl);
                        i.putExtra("MasokoUrl",MasokoUrl);

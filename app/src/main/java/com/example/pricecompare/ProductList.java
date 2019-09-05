@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.pricecompare.AdaptersHelper.RecycleGridAdapter;
+import com.example.pricecompare.DataModel.Products;
 import com.example.pricecompare.WebScraper.QueryUtil;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,11 +48,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Objects;
 
 import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_ONE;
 import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_TWO;

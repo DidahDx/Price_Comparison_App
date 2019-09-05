@@ -1,4 +1,4 @@
-package com.example.pricecompare;
+package com.example.pricecompare.DataModel;
 
 public class Products {
 
@@ -11,6 +11,7 @@ public class Products {
     private String priceNew;
     private String urlLink;
     private String discountPercentage;
+    private String imgLogoDescrption;
 
     public boolean isImageChanged;
 
@@ -18,6 +19,17 @@ public class Products {
     }
 
 
+    public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis,
+                    String imgLogoDes){
+        imgLogoDescrption=imgLogoDes;
+        discountPercentage=dis;
+        productDescription =ProductDes;
+        this.priceOld =priceOld;
+        this.priceNew =PriceNew;
+        imageProduct=imageP;
+        this.urlLink=urlLink;
+        this.imageLogo=imageLogo;
+    }
 
     public Products(String ProductDes,String priceOld,String imageP,String urlLink,String imageLogo,String PriceNew,String dis){
         discountPercentage=dis;
@@ -70,4 +82,7 @@ public class Products {
         return discountPercentage;
     }
 
+    public String getImgLogoDescrption() {
+        return imgLogoDescrption;
+    }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMaps>
+    <entry>
+        <key>webscraping_css</key>
+        <value>{
+            "websites": {
+            "jumia": {
+            "container": "section.products.-mabaya div.sku.-gallery",
+            "priceNew": "span.price",
+            "priceOld": "span.price.-old",
+            "description": "span.name",
+            "urlLink": "a.link",
+            "imgUrl": "img[src]",
+            "imgLogoUrl": "https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png",
+            "discountPercent": "span.sale-flag-percent"
+            },
+            "masoko": {
+            "container": "ol.products.list.items.product-items li.item.product.product-item",
+            "priceNew": "span.price",
+            "priceOld": "span.old-price",
+            "description": "a.product-item-link",
+            "urlLink": "a.product.photo.product-item-photo",
+            "imgUrl": "img[src]",
+            "imgLogoUrl": "https://www.masoko.com/media/logo/stores/1/masoko_fest_logo.png"
+            },
+            "kilimall": {
+            "container": "ul.list_pic li.item",
+            "priceNew": "em.sale-price",
+            "priceOld": "div.goods-discount",
+            "description": "a",
+            "urlLink": "a.lazyload",
+            "imgUrl": "div.goods-pic a[data-src]",
+            "imgUrl2": "img[src]",
+            "imgLogoUrl": "https://image.kilimall.com/kenya/shop/common/05850520183675844.png"
+            }
+            }
+            }</value>
+    </entry>
+</defaultsMaps>

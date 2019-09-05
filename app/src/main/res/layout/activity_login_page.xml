@@ -116,8 +116,10 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
+
                 android:paddingStart="20dp"
                 android:background="@color/white"
+
                 android:drawableStart="@drawable/google_logo"
                 android:text="@string/google_sign_in"/>
 

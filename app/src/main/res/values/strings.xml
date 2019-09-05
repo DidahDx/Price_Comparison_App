@@ -42,5 +42,5 @@
     <string name="logOut">LogOut</string>
     <string name="google_sign_in">Google Sign In</string>
     <string name="or">OR</string>
-    <string name="no_items_saved">No items saved</string>
+    <string name="no_items_saved">No item saved</string>
 </resources>

@@ -4,7 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.pricecompare.Products;
+import com.example.pricecompare.DataModel.Products;
+import com.example.pricecompare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -131,7 +132,7 @@ public class QueryUtil {
 
                 String imglogo=kilimallImgLogoUrl;
 
-                pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
+                pro1 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff,"Kilimall");
             }
 
             products.add(pro1);
@@ -176,7 +177,7 @@ public class QueryUtil {
                 }
 
 
-                pro2 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
+                pro2 = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff,"Masoko");
             }
             products.add(pro2);
         }
@@ -201,7 +202,7 @@ public class QueryUtil {
 
 
 
-                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff);
+                    pro = new Products(productdecrption,priceOld,imageurl,productLink,imglogo,NewPrice,percentageOff,"Jumia");
                 }
 
                 products.add(pro);
@@ -247,7 +248,8 @@ public class QueryUtil {
     private static void fetchScrappingConfig(){
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        long cacheExpiration=0;
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        long cacheExpiration=43200;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
                 .addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
@@ -255,12 +257,13 @@ public class QueryUtil {
                         if (task.isSuccessful()) {
                             // After config data is successfully fetched, it must be activated before newly fetched
                             // values are returned.
-                            mFirebaseRemoteConfig.activateFetched();
+                            mFirebaseRemoteConfig.activate();
                         }
                     }
                 });
 
         String scrapConfig=mFirebaseRemoteConfig.getString("webscraping_css");
+
         initializeScrappingConfig(scrapConfig);
 
     }
@@ -300,8 +303,8 @@ public class QueryUtil {
              masokoContainer= masokoCss.getString("container");
 
         } catch (JSONException e) {
-
             e.printStackTrace();
+
         }
 
     }
