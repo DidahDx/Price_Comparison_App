@@ -257,11 +257,11 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
     //restoring instances after rotation
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         alreadySearched=savedInstanceState.getInt("alreadySearch");
         // restore RecyclerView state
-        if (savedInstanceState != null) {
+        if (savedInstanceState.getParcelable(KEY_RECYCLER_STATE) != null) {
             listState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
         }
     }

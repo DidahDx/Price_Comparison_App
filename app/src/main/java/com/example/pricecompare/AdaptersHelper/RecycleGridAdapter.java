@@ -28,7 +28,7 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
     private static final int GRID_VIEW = 2;
 
     private GridLayoutManager mLayoutManager;
-    ArrayList<Products> products;
+    private ArrayList<Products> products;
     int pos;
 
     private RecycleGridAdapter.OnItemClickListener mListener;
@@ -46,14 +46,14 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
 
 
      class GridViewHolder extends RecyclerView.ViewHolder{
-        public TextView productDescrption;
-        public TextView NewPrice;
-        public TextView OldPrice;
-        public ImageView img;
-        public ProgressBar progressBar;
-        public ImageView imgLogo;
-        public ImageView share;
-        public ImageView save;
+        TextView productDescrption;
+        TextView NewPrice;
+        TextView OldPrice;
+        ImageView img;
+        ProgressBar progressBar;
+        ImageView imgLogo;
+         ImageView share;
+         ImageView save;
         public ImageView saved;
         TextView discount;
 

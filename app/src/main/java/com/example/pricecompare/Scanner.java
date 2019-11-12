@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
     ProgressDialog progressDialog;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,9 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
         scannerView=new ZXingScannerView(this);
         setContentView(scannerView);
 
+//        TextView textView=new TextView(this);
+//        textView.setText("TEXT");
+//        scannerView.addView(textView);
         //checking camera permission
         if (ContextCompat.checkSelfPermission(Scanner.this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(Scanner.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
@@ -86,6 +91,12 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        scannerView.stopCamera();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         scannerView.stopCamera();
@@ -97,7 +108,6 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
         scanResult=result.getText();
         scanName="";
 
-        /*TODO: add a progress dialog*/
         BarcodeUrl();
 
         //checking network before reloading
@@ -330,10 +340,8 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
         @Nullable
         @Override
         public String loadInBackground() {
-           String scannerProd= ScannerQuery.getBarcodeName(googleUrl,barcodeUrl);
 
-
-            return scannerProd;
+            return ScannerQuery.getBarcodeName(googleUrl,barcodeUrl);
         }
     }
 

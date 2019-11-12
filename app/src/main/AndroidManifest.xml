@@ -20,8 +20,7 @@
         <activity android:name=".SavedProducts"></activity>
         <activity android:name=".LoginPage" />
         <activity android:name=".SignUp" />
-        <activity
-            android:name=".Scanner"
+        <activity android:name=".Scanner"
             android:screenOrientation="portrait" />
         <activity android:name=".Search" />
         <activity android:name=".webView" />

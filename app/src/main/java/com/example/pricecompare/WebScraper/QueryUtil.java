@@ -1,6 +1,7 @@
 package com.example.pricecompare.WebScraper;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -27,6 +28,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import io.fabric.sdk.android.services.common.SafeToast;
 
 public class QueryUtil {
 
@@ -72,12 +75,12 @@ public class QueryUtil {
             Document doc= null;
             Document docKili=null;
             Document docMasoko=null;
-            try {
+//            try {
                 fetchScrappingConfig();
-                doc = Jsoup.connect(url).sslSocketFactory(socketFactory()).get();
-                docKili=Jsoup.connect(kilUrl).sslSocketFactory(socketFactory()).get();
-                docMasoko=Jsoup.connect(masokUrl).get();
 
+
+        try {
+            docKili=Jsoup.connect(kilUrl).sslSocketFactory(socketFactory()).get();
 
         //kilimall web scraping content
         for (Element row:docKili.select(kilimallContainer)) {
@@ -138,6 +141,13 @@ public class QueryUtil {
             products.add(pro1);
         }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            docMasoko=Jsoup.connect(masokUrl).get();
+
         //masoko web scraping content
         for (Element row:docMasoko.select(masokoContainer)) {
             Products pro2;
@@ -182,7 +192,14 @@ public class QueryUtil {
             products.add(pro2);
         }
 
-            //jumia web scraping content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            doc = Jsoup.connect(url).sslSocketFactory(socketFactory()).get();
+
+        //jumia web scraping content
             for (Element row:doc.select(jumiaContainer)) {
                 Products pro;
 
@@ -207,16 +224,10 @@ public class QueryUtil {
 
                 products.add(pro);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                // If an error is thrown when executing any of the above statements in the "try" block,
-                // catch the exception here, so the app doesn't crash. Print a log message
-                // with the message from the exception.
-                Log.e(LOG_TAG, "Problem parsing  results", e);
-                products=null;
-
-            }
 
         // Return the list of products
         return products;
@@ -249,7 +260,7 @@ public class QueryUtil {
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
-        long cacheExpiration=43200;
+        long cacheExpiration=10200;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
                 .addOnCompleteListener( new OnCompleteListener<Void>() {
                     @Override
@@ -272,6 +283,7 @@ public class QueryUtil {
         try {
             JSONObject baseJSONresponse = new JSONObject(scrapJson);
             JSONObject websites=baseJSONresponse.getJSONObject("websites");
+
             JSONObject jumiaCss=websites.getJSONObject("jumia");
              jumiaPriceNew=jumiaCss.getString("priceNew");
               jumiaPriceOld=jumiaCss.getString("priceOld");
@@ -291,7 +303,6 @@ public class QueryUtil {
              kilimallImgUrl2=kilimallCss.getString("imgUrl2");
              kilimallImgLogoUrl=kilimallCss.getString("imgLogoUrl");
              kilimallContainer=kilimallCss.getString("container");
-
 
             JSONObject masokoCss=websites.getJSONObject("masoko");
              masokoPriceNew= masokoCss.getString("priceNew");

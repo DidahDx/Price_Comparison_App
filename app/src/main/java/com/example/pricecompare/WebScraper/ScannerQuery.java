@@ -57,7 +57,7 @@ public class ScannerQuery {
             if (!webName.trim().isEmpty()){
                 productName=webName;
 
-            }else if (!googleName.isEmpty() && productName.isEmpty()){
+            }else if (!googleName.isEmpty() && productName.trim().isEmpty()){
                 productName=googleName;
 
             }else{
