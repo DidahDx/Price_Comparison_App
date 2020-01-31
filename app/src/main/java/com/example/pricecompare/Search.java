@@ -268,7 +268,7 @@ public class Search extends AppCompatActivity {
 
     //used to build the masoko Url link
     public void buildMasokoUrl(){
-        MasokoUrl="https://www.masoko.com/catalogsearch/result/index/?product_list_dir=asc&product_list_order=price&q=";
+        MasokoUrl="https://www.masoko.com/search-results?query=";
         MasokoUrl+=buildUrlEnd();
     }
 

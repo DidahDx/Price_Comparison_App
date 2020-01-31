@@ -32,7 +32,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener ,View.OnClickListener{
 
     static TextView editSearch;
 
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Boolean checkLogin;
     MenuItem logOut;
     TextView navUsername;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        editSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Search.class));
-            }
-        });
+        editSearch.setOnClickListener(this);
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -220,5 +216,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             checkLogin=false;
 
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v==editSearch){
+            startActivity(new Intent(MainActivity.this,Search.class));
+        }
+
     }
 }

@@ -187,13 +187,13 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         return products.size();
     }
 
-    //used for adding saved
+    //used for adding saved icon
     public void changeImage(int index) {
         products.get(index).setImageChanged(true);
         notifyItemChanged(index);
     }
 
-    //used for removing saved
+    //used for removing saved icon
     public void removeImage(int index){
         products.get(index).setImageChanged(false);
         notifyItemChanged(index);

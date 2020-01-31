@@ -439,7 +439,8 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
 
             //when there is an error loading data
             if ( data.size() <= 0) {
-                emptyState.setText(getString(R.string.no_data));
+//                emptyState.setText(getString(R.string.no_data));
+                emptyState.setText(getString(R.string.load_error));
                 emptyState.setVisibility(View.VISIBLE);
                 tryAgain.setVisibility(View.VISIBLE);
                 relativeLayout.setVisibility(View.GONE);

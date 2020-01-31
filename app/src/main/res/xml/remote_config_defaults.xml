@@ -15,11 +15,11 @@
             "discountPercent": "span.sale-flag-percent"
             },
             "masoko": {
-            "container": "ol.products.list.items.product-items li.item.product.product-item",
-            "priceNew": "span.price",
-            "priceOld": "span.old-price",
-            "description": "a.product-item-link",
-            "urlLink": "a.product.photo.product-item-photo",
+            "container": "li.productListingList",
+            "priceNew": "p.MuiTypography-root jss665 false MuiTypography-body1",
+            "priceOld": "p.MuiTypography-root jss663 false MuiTypography-body1",
+            "description": "div.MuiBox-root jss698 jss647",
+            "urlLink": "a",
             "imgUrl": "img[src]",
             "imgLogoUrl": "https://www.masoko.com/media/logo/stores/1/masoko_fest_logo.png"
             },

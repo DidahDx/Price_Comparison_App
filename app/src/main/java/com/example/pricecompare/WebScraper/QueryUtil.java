@@ -80,9 +80,26 @@ public class QueryUtil {
 
 
         try {
-            docKili=Jsoup.connect(kilUrl).sslSocketFactory(socketFactory()).get();
+            docKili=Jsoup.connect(kilUrl)
+                    .sslSocketFactory(socketFactory())
+                    .header("authority", "www.kilimall.co.ke")
+                    .header("method", "GET")
+                    .header("scheme", "https")
+                    .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3")
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .header("accept-language", "en-US,en;q=0.9")
+                    .header("cache-control", "max-age=0")
+                    .header("Connection","keep-alive")
+                    .header("Host","www.kilimall.co.ke")
+                    .referrer(kilUrl)
+                    .header("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36")
+                    .header("upgrade-insecure-requests","1")
+                    .maxBodySize(0)
+                    .timeout(60000)
+                    .get();
 
         //kilimall web scraping content
+            System.out.println(docKili.select(kilimallContainer));
         for (Element row:docKili.select(kilimallContainer)) {
             Products pro1;
             String imageurl;
@@ -182,7 +199,7 @@ public class QueryUtil {
                         percentageOff+=df.format(100-((dNew/dOld)*100));
                         percentageOff+="%";
                     }catch (NumberFormatException e){
-                        Log.d(LOG_TAG,"Error in Caculation"+e.getStackTrace(),e);
+                        Log.d(LOG_TAG,"Error in Caculation "+ e.getStackTrace().toString());
                     }
                 }
 
