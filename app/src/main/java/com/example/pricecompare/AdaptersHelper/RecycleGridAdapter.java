@@ -1,6 +1,8 @@
 package com.example.pricecompare.AdaptersHelper;
 
 import android.graphics.Paint;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,15 +101,12 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
             });
 
             //click listener for save
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener!=null){
-                        int position=getAdapterPosition();
-                        if (position!=RecyclerView.NO_POSITION){
-                            listener.onSaveClick(position);
+            save.setOnClickListener(v -> {
+                if (listener!=null){
+                    int position=getAdapterPosition();
+                    if (position!=RecyclerView.NO_POSITION){
+                        listener.onSaveClick(position);
 
-                        }
                     }
                 }
             });
@@ -147,18 +146,24 @@ public class RecycleGridAdapter extends RecyclerView.Adapter<RecycleGridAdapter.
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
         holder.imgLogo.setContentDescription(currentProduct.getImgLogoDescrption());
-        Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
-            @Override
-            public void onSuccess() {
-                holder.progressBar.setVisibility(View.GONE);
-            }
 
-            @Override
-            public void onError(Exception e) {
-                holder.progressBar.setVisibility(View.GONE);
-                holder.img.setImageResource(R.drawable.fail_image_load);
-            }
-        });
+        Log.e(this.getClass().getSimpleName(),currentProduct.getImageProduct()+" image");
+
+        if(!TextUtils.isEmpty(currentProduct.getImageProduct().trim())){
+            Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
+                @Override
+                public void onSuccess() {
+                    holder.progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.img.setImageResource(R.drawable.fail_image_load);
+                }
+            });
+        }
+
 
         Picasso.get().load(currentProduct.getImageLogo()).into(holder.imgLogo);
 

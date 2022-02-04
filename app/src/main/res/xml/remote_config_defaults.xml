@@ -5,32 +5,32 @@
         <value>{
             "websites": {
             "jumia": {
-            "container": "section.products.-mabaya div.sku.-gallery",
-            "priceNew": "span.price",
-            "priceOld": "span.price.-old",
-            "description": "span.name",
-            "urlLink": "a.link",
-            "imgUrl": "img[src]",
+            "container": "article.prd._fb.col.c-prd",
+            "priceNew": "div.prc",
+            "priceOld": "div.old",
+            "description": "h3.name",
+            "urlLink": "a.core",
+            "imgUrl": "div.img-c img.img[src]",
             "imgLogoUrl": "https://static.jumia.co.ke/cms/icons/jumialogo-x-4.png",
-            "discountPercent": "span.sale-flag-percent"
+            "discountPercent": "div.tag._dsct._sm"
             },
             "masoko": {
             "container": "li.productListingList",
-            "priceNew": "p.MuiTypography-root jss665 false MuiTypography-body1",
+            "priceNew": "p.MuiTypography-root.jss544.false.MuiTypography-body1",
             "priceOld": "p.MuiTypography-root jss663 false MuiTypography-body1",
-            "description": "div.MuiBox-root jss698 jss647",
+            "description": "div.MuiBox-root.jss536.jss524",
             "urlLink": "a",
             "imgUrl": "img[src]",
-            "imgLogoUrl": "https://www.masoko.com/media/logo/stores/1/masoko_fest_logo.png"
+            "imgLogoUrl": "https://assets.shop.masoko.com/logo/stores/1/logo.png"
             },
             "kilimall": {
-            "container": "ul.list_pic li.item",
-            "priceNew": "em.sale-price",
-            "priceOld": "div.goods-discount",
-            "description": "a",
-            "urlLink": "a.lazyload",
+            "container": "div.el-col.el-col-6",
+            "priceNew": "div.wordwrap-price span",
+            "priceOld": "span.twoksh",
+            "description": "div.wordwrap",
+            "urlLink": "a.showHand",
             "imgUrl": "div.goods-pic a[data-src]",
-            "imgUrl2": "img[src]",
+            "imgUrl2": "img.imgClass[src]",
             "imgLogoUrl": "https://image.kilimall.com/kenya/shop/common/05850520183675844.png"
             }
             }
