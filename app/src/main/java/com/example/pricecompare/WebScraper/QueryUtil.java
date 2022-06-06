@@ -236,7 +236,7 @@ public class QueryUtil {
                 if (row.select(jumiaDescription).text().equals("")) {
                     continue;
                 } else {
-                    String imageurl = row.select(jumiaImgUrl).attr("abs:src");
+                    String imageurl = row.select(jumiaImgUrl).attr("data-src");
                     String productLink = row.select(jumiaUrlLink).attr("href");
                     String priceOld = row.select(jumiaPriceOld).text();
                     String productdecrption = row.select(jumiaDescription).text();
@@ -247,7 +247,7 @@ public class QueryUtil {
                     String NewProduct = row.select("span.new-flag").text();
 
 
-                    pro = new Products(productdecrption, priceOld, imageurl, productLink, imglogo, NewPrice, percentageOff, "Jumia");
+                    pro = new Products(productdecrption, priceOld, imageurl, "https://www.jumia.co.ke"+productLink, imglogo, NewPrice, percentageOff, "Jumia");
                 }
 
                 products.add(pro);
