@@ -11,14 +11,15 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.google.gms:google-services:4.3.10'
 
         // Add the dependency for the Performance Monitoring plugin
-        classpath 'com.google.firebase:perf-plugin:1.3.1'
+        classpath  'com.google.firebase:perf-plugin:1.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
 
-        // Add dependency
-        classpath 'io.fabric.tools:gradle:1.31.2'  // Crashlytics plugin
+//        // Add dependency
+//        classpath 'io.fabric.tools:gradle:1.31.2'  // Crashlytics plugin
 
         // Performance Monitoring plugin
         // NOTE: Do not place your application dependencies here; they belong

@@ -19,25 +19,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Best comparing prices mobile app"
+                android:text="Best comparing prices app"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:maxLines="2"
                 android:textSize="26sp"
+                android:textAlignment="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:textStyle="bold|italic"
                 />
 
-            <ImageView
-                android:id="@+id/compare_image"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="180dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/weighscale"
-
-                android:layout_marginBottom="50dp"/>
-
+                android:layout_marginBottom="10dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/savings" />
 
             <TextView
                 android:layout_width="match_parent"
