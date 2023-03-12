@@ -17,6 +17,12 @@ references:
   workspace: &workspace
                ~/code
 
+
+  enable_chmod_permissions: &enable_chmod_permissions
+    run:
+      name: chmod permissions
+      command: chmod +x ./gradlew
+
   # ---------------------------------------------------------------------------------------------------------------------
   # DECODE FIREBASE GOOGLE_SERVICE_JSON FILE AND WRITE IT TO A FILE
   # ---------------------------------------------------------------------------------------------------------------------
@@ -36,6 +42,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - *decode_firebase_google_services_key
+      - *enable_chmod_permissions
 
       # The next step will run the unit tests
       - android/run-tests:
