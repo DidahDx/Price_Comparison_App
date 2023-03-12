@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_price_comp_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SavedProducts"></activity>
+        <activity android:name=".SavedProducts" />
         <activity android:name=".LoginPage" />
         <activity android:name=".SignUp" />
         <activity android:name=".Scanner"
@@ -25,7 +25,8 @@
         <activity android:name=".Search" />
         <activity android:name=".webView" />
         <activity android:name=".ProductList" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

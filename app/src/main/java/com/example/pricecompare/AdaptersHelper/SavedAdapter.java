@@ -1,6 +1,7 @@
 package com.example.pricecompare.AdaptersHelper;
 
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,19 +135,20 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.GridViewHold
         holder.NewPrice.setText(currentProduct.getPriceNew());
         holder.productDescrption.setText(currentProduct.getProductDescription());
 
-        Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
-            @Override
-            public void onSuccess() {
-                holder.progressBar.setVisibility(View.GONE);
-            }
+        if(!TextUtils.isEmpty(currentProduct.getImageProduct().trim())) {
+            Picasso.get().load(currentProduct.getImageProduct()).into(holder.img, new Callback() {
+                @Override
+                public void onSuccess() {
+                    holder.progressBar.setVisibility(View.GONE);
+                }
 
-            @Override
-            public void onError(Exception e) {
-                holder.progressBar.setVisibility(View.GONE);
-                holder.img.setImageResource(R.drawable.fail_image_load);
-            }
-        });
-
+                @Override
+                public void onError(Exception e) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.img.setImageResource(R.drawable.fail_image_load);
+                }
+            });
+        }
         Picasso.get().load(currentProduct.getImageLogo()).into(holder.imgLogo);
 
     }

@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void LogOutGoogleSignIn() {
         GoogleSignInOptions googleSignInOptions=new GoogleSignInOptions
-                .Builder()
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);

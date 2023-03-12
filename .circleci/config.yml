@@ -1,103 +1,82 @@
-version: 2.0
+# Use the latest 2.1 version of CircleCI pipeline process engine. 
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
 
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+orbs:
+  android: circleci/android@1.0.3
+
+# References are blocks of configurations that we can reference and reuse.
 references:
 
-  workspace_root: &workspace_root
-      ~/workspace
+  executor: &executor
+    name: android/android-machine
+    resource-class: large
+  # Workspaces represent the spaces we work on & are useful for sharing data between jobs.
+  # Create a workspace with the ~/code directory.
+  workspace: &workspace
+               ~/code
 
-  container_config: &container_config
-    docker:
-      - image: circleci/android:api-28
 
-    working_directory: *workspace_root
+  enable_chmod_permissions: &enable_chmod_permissions
+    run:
+      name: chmod permissions
+      command: chmod +x ./gradlew
 
-    environment:
-      TERM: dumb
-      JVM_OPTS: -Xmx4096m
-
-  attach_workspace: &attach_workspace
-    attach_workspace:
-      at: *workspace_root
-
-  general_cache_key: &general_cache_key
-      key: app-{{ checksum "build.gradle.kts" }}-{{ checksum "app/build.gradle.kts" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum "gradle.properties" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+  # ---------------------------------------------------------------------------------------------------------------------
+  # DECODE FIREBASE GOOGLE_SERVICE_JSON FILE AND WRITE IT TO A FILE
+  # ---------------------------------------------------------------------------------------------------------------------
+  decode_firebase_google_services_key: &decode_firebase_google_services_key
+    run:
+      name: Decode Google Firebase Services JSON key
+      command: echo $FIREBASE_SECRET > app/google-services.json
 
 jobs:
+  # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
+  build-and-test:
+    # These next lines define the Android machine image executor: https://circleci.com/docs/2.0/executor-types/
+    executor:
+      name: android/android-machine
 
-  build:
-    <<: *container_config
     steps:
+      # Checkout the code as the first step.
       - checkout
+      - *decode_firebase_google_services_key
+      - *enable_chmod_permissions
 
-      - restore_cache:
-          <<: *general_cache_key
-      - run:
-          name: Setup environment
-          command: scripts/ci-setup.sh
-      - save_cache:
-          <<: *general_cache_key
-          paths:
-            - "~/.gradle"
-            - "~/.m2"
-            - "/opt/android-sdk-linux/licenses/"
+      # The next step will run the unit tests
+      - android/run-tests:
+          test-command: ./gradlew lint testDebug --continue
 
+      # Then start the emulator and run the Instrumentation tests!
+      - android/start-emulator-and-run-tests:
+          test-command: ./gradlew connectedDebugAndroidTest
+          system-image: system-images;android-25;google_apis;x86
+
+      # And finally run the release build
       - run:
-          name: Build
-          command: ./gradlew assembleDebug
+          name: Assemble release build
+          command: |
+            ./gradlew assembleRelease countReleaseBundleDexMethods
 
       - store_artifacts:
-          path: app/build/outputs/apk/
-          destination: apks/
-
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - .
-
-  check:
-    <<: *container_config
-    steps:
-      - *attach_workspace
-
-      - restore_cache:
-          <<: *general_cache_key
-
-      - run:
-          name: Run checks
-          command: ./gradlew lintDebug ktlintCheck
-
-      - store_artifacts:
-          path: app/build/reports/
-          destination: lint_reports/app/
-
-  test:
-    <<: *container_config
-    steps:
-      - *attach_workspace
-
-      - restore_cache:
-          <<: *general_cache_key
-
-      - run:
-          name: Run tests
-          command: ./gradlew testDebugUnitTest
-
-      - store_artifacts:
-          path: app/build/reports/tests/
-          destination: tests_reports/
+          path: app/build/reports
+          destination: reports
 
       - store_test_results:
           path: app/build/test-results
+      - store_artifacts:
+          path:  app/build/outputs/dexcount
+          destination: dexcount
+      - store_artifacts:
+          path:  app/build/outputs/apk
+          destination: apk
 
 workflows:
-  version: 2
-
-  build_check_tests:
+  # Below is the definition of your workflow.
+  # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
+  # CircleCI will run this workflow on every commit.
+  # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  sample:
     jobs:
-      - build
-      - check:
-          requires:
-            - build
-      - test:
-          requires:
-            - build
+      - build-and-test
