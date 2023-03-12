@@ -12,6 +12,7 @@ references:
   executor: &executor
     name: android/android-machine
     resource-class: large
+    tag: 2021.10.1
   # Workspaces represent the spaces we work on & are useful for sharing data between jobs.
   # Create a workspace with the ~/code directory.
   workspace: &workspace
