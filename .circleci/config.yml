@@ -9,6 +9,14 @@ orbs:
 # References are blocks of configurations that we can reference and reuse.
 references:
 
+  executor: &executor
+    name: android/android-machine
+    resource-class: large
+  # Workspaces represent the spaces we work on & are useful for sharing data between jobs.
+  # Create a workspace with the ~/code directory.
+  workspace: &workspace
+               ~/code
+
   # ---------------------------------------------------------------------------------------------------------------------
   # DECODE FIREBASE GOOGLE_SERVICE_JSON FILE AND WRITE IT TO A FILE
   # ---------------------------------------------------------------------------------------------------------------------
@@ -21,8 +29,7 @@ jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build-and-test:
     # These next lines define the Android machine image executor: https://circleci.com/docs/2.0/executor-types/
-    executor:
-      name: android/android-machine
+    executor: *executor
 
     steps:
       # Checkout the code as the first step.
