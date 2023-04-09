@@ -1,17 +1,12 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui;
 
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.pricecompare.R;
+import com.example.pricecompare.ui.savedproducts.SavedProducts;
+import com.example.pricecompare.ui.search.Search;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -154,14 +152,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
 
             case R.id.nav_login:
-                Intent i=new Intent(MainActivity.this,LoginPage.class);
+                Intent i=new Intent(MainActivity.this, Login.class);
                 startActivity(i);
                 break;
 
 
 
             case R.id.nav_saved:
-                startActivity(new Intent(MainActivity.this,SavedProducts.class));
+                startActivity(new Intent(MainActivity.this, SavedProducts.class));
                 break;
 
         }
@@ -222,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClick(View v) {
 
         if (v==editSearch){
-            startActivity(new Intent(MainActivity.this,Search.class));
+            startActivity(new Intent(MainActivity.this, Search.class));
         }
 
     }

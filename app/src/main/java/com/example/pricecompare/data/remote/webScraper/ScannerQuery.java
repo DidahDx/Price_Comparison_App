@@ -1,10 +1,7 @@
-package com.example.pricecompare.WebScraper;
-
-import com.example.pricecompare.Scanner;
+package com.example.pricecompare.data.remote.webScraper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.security.KeyManagementException;

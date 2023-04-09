@@ -1,4 +1,4 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui.products;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,9 +35,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.pricecompare.AdaptersHelper.RecycleGridAdapter;
-import com.example.pricecompare.DataModel.Products;
-import com.example.pricecompare.WebScraper.QueryUtil;
+import com.example.pricecompare.R;
+import com.example.pricecompare.data.model.Products;
+import com.example.pricecompare.data.remote.webScraper.QueryUtil;
+import com.example.pricecompare.ui.Login;
+import com.example.pricecompare.ui.savedproducts.SavedProducts;
+import com.example.pricecompare.ui.WebView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,8 +55,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_ONE;
-import static com.example.pricecompare.AdaptersHelper.RecycleGridAdapter.SPAN_COUNT_TWO;
+import static com.example.pricecompare.ui.products.RecycleGridAdapter.SPAN_COUNT_ONE;
+import static com.example.pricecompare.ui.products.RecycleGridAdapter.SPAN_COUNT_TWO;
 
 public class ProductList extends AppCompatActivity  implements  LoaderManager.LoaderCallbacks<ArrayList<Products>> {
 
@@ -301,7 +304,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                     }catch (Exception e){
                         Toast.makeText(ProductList.this, "Browser not Found ", Toast.LENGTH_LONG).show();
                         //internal web browser
-                        Intent i=new Intent(ProductList.this,webView.class);
+                        Intent i=new Intent(ProductList.this, WebView.class);
                         i.putExtra("UrlWebLink",url);
                         startActivity(i);
                     }
@@ -365,7 +368,7 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
                         }
 
                     }else {
-                        startActivity(new Intent(ProductList.this,LoginPage.class));
+                        startActivity(new Intent(ProductList.this, Login.class));
                     }
 
                 }
@@ -394,9 +397,9 @@ public class ProductList extends AppCompatActivity  implements  LoaderManager.Lo
             case R.id.saved_items:
                 firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser!=null){
-                    startActivity(new Intent(ProductList.this,SavedProducts.class));
+                    startActivity(new Intent(ProductList.this, SavedProducts.class));
                 }else {
-                    startActivity(new Intent(ProductList.this,LoginPage.class));
+                    startActivity(new Intent(ProductList.this, Login.class));
 
                 }
                 break;

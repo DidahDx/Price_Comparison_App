@@ -1,4 +1,4 @@
-package com.example.pricecompare.DataModel;
+package com.example.pricecompare.data.model;
 
 public class Recent {
 

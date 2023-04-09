@@ -1,8 +1,7 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui.search;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,12 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,32 +21,29 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pricecompare.AdaptersHelper.RecentAdapter;
-import com.example.pricecompare.DataModel.Recent;
+import com.example.pricecompare.R;
+import com.example.pricecompare.data.model.Recent;
+import com.example.pricecompare.ui.scanner.Scanner;
+import com.example.pricecompare.ui.products.ProductList;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.zxing.Result;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Search extends AppCompatActivity {
 
-    static EditText editSearch;
+    public static EditText editSearch;
     ImageButton voiceSearch;
     ImageButton barcodeSearch;
     static String jumiaUrl;
     static String kilimallUrl;
     static String MasokoUrl;
     private static final int RECOGNIZER_RESULT=1;
-    static ArrayList<Recent>  recentSearch=new ArrayList<Recent>();
+    public static ArrayList<Recent>  recentSearch=new ArrayList<Recent>();
     static ArrayList<Recent>  databaseProducts=new ArrayList<Recent>();
 
     RecyclerView recyclerView;
     GridLayoutManager gridLayoutManager;
-    RecentAdapter recentAdapter;
+    RecentSearchAdapter recentAdapter;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -70,11 +64,11 @@ public class Search extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.rv_recent);
         gridLayoutManager=new GridLayoutManager(this,1);
-        recentAdapter=new RecentAdapter(recentSearch,gridLayoutManager);
+        recentAdapter=new RecentSearchAdapter(recentSearch,gridLayoutManager);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(recentAdapter);
 
-        recentAdapter.setOnItemClickListener(new RecentAdapter.OnItemClickListener(){
+        recentAdapter.setOnItemClickListener(new RecentSearchAdapter.OnItemClickListener(){
 
             @Override
             public void onItemClick(int position) {
@@ -86,7 +80,7 @@ public class Search extends AppCompatActivity {
                     buildKilimallUrl();
                     buildMasokoUrl();
 
-                    Intent i =new Intent(Search.this,ProductList.class);
+                    Intent i =new Intent(Search.this, ProductList.class);
                     i.putExtra("JumiaUrl",jumiaUrl);
                     i.putExtra("kilimallUrl",kilimallUrl);
                     i.putExtra("MasokoUrl",MasokoUrl);
@@ -126,11 +120,11 @@ public class Search extends AppCompatActivity {
                         }
                     }
 
-                    recentAdapter=new RecentAdapter(found,gridLayoutManager);
+                    recentAdapter=new RecentSearchAdapter(found,gridLayoutManager);
                     recyclerView.setAdapter(recentAdapter);
                     RecentListener(found);
                 }else{
-                    recentAdapter=new RecentAdapter(recentSearch,gridLayoutManager);
+                    recentAdapter=new RecentSearchAdapter(recentSearch,gridLayoutManager);
                     recyclerView.setAdapter(recentAdapter);
                     RecentListener(recentSearch);
                 }
@@ -281,7 +275,7 @@ public class Search extends AppCompatActivity {
 
 
     public void RecentListener(final ArrayList<Recent> list){
-        recentAdapter.setOnItemClickListener(new RecentAdapter.OnItemClickListener(){
+        recentAdapter.setOnItemClickListener(new RecentSearchAdapter.OnItemClickListener(){
 
             @Override
             public void onItemClick(int position) {

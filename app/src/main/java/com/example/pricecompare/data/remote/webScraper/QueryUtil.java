@@ -1,11 +1,10 @@
-package com.example.pricecompare.WebScraper;
+package com.example.pricecompare.data.remote.webScraper;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.pricecompare.DataModel.Products;
+import com.example.pricecompare.data.model.Products;
 import com.example.pricecompare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,14 +17,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 
-import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -246,7 +243,7 @@ public class QueryUtil {
 
                 products.add(pro);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

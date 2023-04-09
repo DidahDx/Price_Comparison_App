@@ -1,4 +1,4 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui.scanner;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -9,9 +9,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,18 +21,16 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
-import com.example.pricecompare.DataModel.Recent;
-import com.example.pricecompare.WebScraper.QueryUtil;
-import com.example.pricecompare.WebScraper.ScannerQuery;
+import com.example.pricecompare.R;
+import com.example.pricecompare.data.model.Recent;
+import com.example.pricecompare.data.remote.webScraper.ScannerQuery;
+import com.example.pricecompare.ui.products.ProductList;
+import com.example.pricecompare.ui.search.Search;
 import com.google.zxing.Result;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-import static com.example.pricecompare.Search.editSearch;
+import static com.example.pricecompare.ui.search.Search.editSearch;
 
 public class Scanner extends AppCompatActivity implements ZXingScannerView.ResultHandler, LoaderManager.LoaderCallbacks<String>{
 
@@ -150,9 +145,9 @@ public class Scanner extends AppCompatActivity implements ZXingScannerView.Resul
                     buildKilimallUrl();
                     buildMasokoUrl();
 
-                    Intent i =new Intent(Scanner.this,ProductList.class);
+                    Intent i =new Intent(Scanner.this, ProductList.class);
 
-                    Search.recentSearch.add(new Recent(scanResult,R.drawable.ic_barcode,R.drawable.ic_close));
+                    Search.recentSearch.add(new Recent(scanResult, R.drawable.ic_barcode,R.drawable.ic_close));
 
                     editSearch.setText(scanResult);
                     i.putExtra("JumiaUrl",jumiaUrl);
