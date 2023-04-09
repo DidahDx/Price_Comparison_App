@@ -1,4 +1,4 @@
-package com.example.pricecompare.AdaptersHelper;
+package com.example.pricecompare.ui.products;
 
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pricecompare.DataModel.Products;
+import com.example.pricecompare.data.model.Products;
 import com.example.pricecompare.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

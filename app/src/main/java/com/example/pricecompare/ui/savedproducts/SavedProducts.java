@@ -1,4 +1,4 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui.savedproducts;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,8 +15,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pricecompare.AdaptersHelper.SavedAdapter;
-import com.example.pricecompare.DataModel.Products;
+import com.example.pricecompare.R;
+import com.example.pricecompare.data.model.Products;
+import com.example.pricecompare.ui.WebView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -141,7 +142,7 @@ public class SavedProducts extends AppCompatActivity {
                 }catch (Exception e){
                     Toast.makeText(SavedProducts.this, "Browser not Found ", Toast.LENGTH_LONG).show();
                     //internal web browser
-                    Intent i=new Intent(SavedProducts.this,webView.class);
+                    Intent i=new Intent(SavedProducts.this, WebView.class);
                     i.putExtra("UrlWebLink",url);
                     startActivity(i);
                 }

@@ -1,4 +1,4 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.pricecompare.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginPage extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     private static final int GOOGLE_SIGN =40 ;
     Button loginButton;
@@ -39,7 +40,7 @@ public class LoginPage extends AppCompatActivity {
     EditText password;
     ProgressBar progressBar;
 
-    String TAG=LoginPage.class.getSimpleName();
+    String TAG= Login.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;
     FirebaseAuth mAuth;
@@ -88,7 +89,7 @@ public class LoginPage extends AppCompatActivity {
 
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
-                                    Toast.makeText(LoginPage.this, "Login Successful.",
+                                    Toast.makeText(Login.this, "Login Successful.",
                                             Toast.LENGTH_LONG).show();
                                     firebaseUser = mAuth.getCurrentUser();
                                     finish();
@@ -96,14 +97,14 @@ public class LoginPage extends AppCompatActivity {
                                     errorMessage.setText(getString(R.string.login_error_message));
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginPage.this, "Authentication failed.",
+                                    Toast.makeText(Login.this, "Authentication failed.",
                                             Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
 
            }else{
-                   Toast.makeText(LoginPage.this, "Fill both Email and Password Fields",
+                   Toast.makeText(Login.this, "Fill both Email and Password Fields",
                            Toast.LENGTH_LONG).show();
                }
 
@@ -114,7 +115,7 @@ public class LoginPage extends AppCompatActivity {
        signUpButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               startActivity(new Intent(LoginPage.this,SignUp.class));
+               startActivity(new Intent(Login.this,SignUp.class));
            }
        });
 
@@ -169,11 +170,11 @@ public class LoginPage extends AppCompatActivity {
            if (task.isSuccessful()){
                Log.d(TAG,"signin success");
                firebaseUser=mAuth.getCurrentUser();
-               Toast.makeText(LoginPage.this, "sign In success", Toast.LENGTH_LONG).show();
+               Toast.makeText(Login.this, "sign In success", Toast.LENGTH_LONG).show();
                finish();
            }else {
                Log.d(TAG,"signin failed "+task.getException());
-               Toast.makeText(LoginPage.this, "sign in failed", Toast.LENGTH_LONG).show();
+               Toast.makeText(Login.this, "sign in failed", Toast.LENGTH_LONG).show();
            }
             }
         });

@@ -17,15 +17,15 @@
         android:roundIcon="@mipmap/ic_price_comp_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SavedProducts" />
-        <activity android:name=".LoginPage" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".Scanner"
+        <activity android:name=".ui.savedproducts.SavedProducts" />
+        <activity android:name=".ui.Login" />
+        <activity android:name=".ui.SignUp" />
+        <activity android:name=".ui.scanner.Scanner"
             android:screenOrientation="portrait" />
-        <activity android:name=".Search" />
-        <activity android:name=".webView" />
-        <activity android:name=".ProductList" />
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.search.Search" />
+        <activity android:name=".ui.WebView" />
+        <activity android:name=".ui.products.ProductList" />
+        <activity android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

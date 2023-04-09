@@ -1,15 +1,15 @@
-package com.example.pricecompare;
+package com.example.pricecompare.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.pricecompare.R;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class webView extends AppCompatActivity {
+public class WebView extends AppCompatActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -20,7 +20,7 @@ public class webView extends AppCompatActivity {
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        WebView web=findViewById(R.id.web);
+        android.webkit.WebView web=findViewById(R.id.web);
 
         web.setWebViewClient(new WebViewClient());
         WebSettings webSettings=web.getSettings();

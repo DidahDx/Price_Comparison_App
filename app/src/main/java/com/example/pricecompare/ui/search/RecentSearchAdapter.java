@@ -1,4 +1,4 @@
-package com.example.pricecompare.AdaptersHelper;
+package com.example.pricecompare.ui.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,25 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pricecompare.DataModel.Recent;
+import com.example.pricecompare.data.model.Recent;
 import com.example.pricecompare.R;
 
 import java.util.ArrayList;
 
-public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentViewHolder>{
+public class RecentSearchAdapter extends RecyclerView.Adapter<RecentSearchAdapter.RecentViewHolder>{
 
 
     private GridLayoutManager mLayoutManager;
   private ArrayList<Recent> product_name;
 
-    private RecentAdapter.OnItemClickListener mListener;
+    private RecentSearchAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onDeleteClick(int position);
     }
 
-    public void setOnItemClickListener(RecentAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(RecentSearchAdapter.OnItemClickListener listener){
         mListener=listener;
     }
 
@@ -37,7 +37,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         ImageView recent_image;
         ImageView recent_close;
 
-        public RecentViewHolder(@NonNull View itemView, final RecentAdapter.OnItemClickListener listener, int viewType) {
+        public RecentViewHolder(@NonNull View itemView, final RecentSearchAdapter.OnItemClickListener listener, int viewType) {
             super(itemView);
 
             recent_image=itemView.findViewById(R.id.recent_image);
@@ -71,7 +71,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         }
     }
 
-    public RecentAdapter(ArrayList<Recent> prod,GridLayoutManager gridLayoutManager){
+    public RecentSearchAdapter(ArrayList<Recent> prod, GridLayoutManager gridLayoutManager){
         product_name=prod;
         mLayoutManager=gridLayoutManager;
 
@@ -81,11 +81,11 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
     @Override
     public RecentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.recommend_list,parent,false);
-        return new RecentAdapter.RecentViewHolder(v,mListener,viewType);
+        return new RecentSearchAdapter.RecentViewHolder(v,mListener,viewType);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecentAdapter.RecentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecentSearchAdapter.RecentViewHolder holder, int position) {
         Recent current=product_name.get(position);
 
         holder.recent_name.setText(current.getName());
